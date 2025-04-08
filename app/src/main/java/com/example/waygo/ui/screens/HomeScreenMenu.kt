@@ -144,7 +144,7 @@ fun HomeScreenMenu(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text(text = stringResource(id = R.string.home)) },
+                    title = {},
                     navigationIcon = {
                         IconButton(onClick = {
                             scope.launch {
