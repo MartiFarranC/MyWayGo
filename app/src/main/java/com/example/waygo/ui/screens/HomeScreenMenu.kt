@@ -129,6 +129,13 @@ fun HomeScreenMenu(
                     }) {
                         Text(text = stringResource(id = R.string.terms_and_conditions))
                     }
+
+                    Spacer(Modifier.height(12.dp))
+                    Button(onClick = {
+                        navController.navigate("about")
+                    }) {
+                        Text(text = stringResource(id = R.string.about_us))
+                    }
                 }
             }
         },

@@ -69,5 +69,6 @@
     <string name="create_trip">Create a Trip</string>
     <string name="travel_dates">Travel Dates</string>
     <string name="save_trip">Save Trip</string>
-
+    <string name="add_trip">Add Trip</string>
+    <string name="cancel">Cancel</string>
 </resources>

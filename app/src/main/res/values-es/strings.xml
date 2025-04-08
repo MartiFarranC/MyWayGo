@@ -69,5 +69,6 @@
     <string name="create_trip">Crear un Viaje</string>
     <string name="travel_dates">Fechas del Viaje</string>
     <string name="save_trip">Guardar Viaje</string>
-
+    <string name="add_trip">Anade Viaje</string>
+    <string name="cancel">Cancelar</string>
 </resources>

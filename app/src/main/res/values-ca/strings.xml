@@ -69,5 +69,6 @@
     <string name="create_trip">Crea un Viatge</string>
     <string name="travel_dates">Dates del Viatge</string>
     <string name="save_trip">Desa el Viatge</string>
-
+    <string name="add_trip">Afeixeix Viatge</string>
+    <string name="cancel">Cancelar</string>
 </resources>
