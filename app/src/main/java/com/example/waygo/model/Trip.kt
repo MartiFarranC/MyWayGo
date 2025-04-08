@@ -1,13 +1,9 @@
 package com.example.waygo.model
 
-import java.util.Date
-
 data class Trip(
-    val id: String,
-    val destination: String,
-    val startDate: Date,
-    val endDate: Date,
-    val budget: Double,
-    val itinerary: List<ItineraryItem> = emptyList(),
-    val photos: List<Photo> = emptyList()
+    val name: String,
+    val destinations: String,
+    val participants: String,
+    val startDate: String,
+    val endDate: String
 )

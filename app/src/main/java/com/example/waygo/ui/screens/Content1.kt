@@ -32,7 +32,6 @@ fun Content1(navController: NavController, paddingValues: PaddingValues) {
             verticalAlignment = Alignment.CenterVertically // Centra verticalment el text i el botó
         ) {
             Button(onClick = {
-                // Navigate to the Register screen
                 navController.navigate("about")
             }) {
                 Text(text = stringResource(id = R.string.about_us))

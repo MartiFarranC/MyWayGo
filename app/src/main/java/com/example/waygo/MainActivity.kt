@@ -27,4 +27,3 @@ fun MainScreen() {
     val navController = rememberNavController()
     NavGraph(navController = navController)
 }
-

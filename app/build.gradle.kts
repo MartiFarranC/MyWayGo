@@ -10,11 +10,11 @@ android {
 
     defaultConfig {
         applicationId = "com.example.waygo"
-        minSdk = 26
+        //minSdk = 26
+        minSdk = 23 //TODO: Afecta a l'app?
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

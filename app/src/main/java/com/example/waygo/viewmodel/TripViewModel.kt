@@ -1,31 +1,17 @@
 package com.example.waygo.viewmodel
 
 import com.example.waygo.model.Trip
-import com.example.waygo.repository.TripRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import androidx.lifecycle.ViewModel
 
-class TripViewModel {
-    private val repository = TripRepository()
+class TripViewModel : ViewModel() {
     private val _trips = MutableStateFlow<List<Trip>>(emptyList())
-    val trips: StateFlow<List<Trip>> get() = _trips
-
-    init {
-        _trips.value = repository.getTrips()
-    }
+    val trips: StateFlow<List<Trip>> = _trips
 
     fun addTrip(trip: Trip) {
-        repository.addTrip(trip)
-        _trips.value = repository.getTrips()
+        _trips.value = _trips.value + trip
+        println("Trip afegit: $trip")
     }
 
-    fun editTrip(updatedTrip: Trip) {
-        repository.editTrip(updatedTrip)
-        _trips.value = repository.getTrips()
-    }
-
-    fun deleteTrip(tripId: String) {
-        repository.deleteTrip(tripId)
-        _trips.value = repository.getTrips()
-    }
 }
