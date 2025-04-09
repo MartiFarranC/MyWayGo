@@ -18,15 +18,19 @@ import com.example.waygo.ui.screens.TravelCreatorScreen
 import com.example.waygo.ui.screens.TravelScreen1
 import com.example.waygo.ui.screens.TravelScreen2
 import com.example.waygo.ui.screens.HelpScreen
+import com.example.waygo.viewmodel.TripViewModel
 
 
 @Composable
 fun NavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "login") {
         composable("login") { LoginScreen(navController) }
-        composable("home") { HomeScreenMenu(navController) { innerPadding ->
-            Content1(navController, innerPadding)
-        }}
+        composable("home") {
+            val tripViewModel = TripViewModel()
+            HomeScreenMenu(navController) { innerPadding ->
+                Content1(navController, innerPadding, tripViewModel)
+            }
+        }
         composable("profile") { ProfileScreen(navController) }
         composable("profileMenu") { ProfileScreen(navController) }
         composable("register") { RegisterScreen(navController) }

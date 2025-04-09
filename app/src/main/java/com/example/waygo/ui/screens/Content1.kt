@@ -34,44 +34,17 @@ import androidx.compose.foundation.background
 import androidx.compose.material.icons.filled.Person
 import android.app.DatePickerDialog
 import android.os.Build
-import android.widget.DatePicker
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import com.example.waygo.model.Trip
+import com.example.waygo.viewmodel.TripViewModel
 
-@RequiresApi(Build.VERSION_CODES.N) //TODO 24?
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
-fun Content1(navController: NavController, paddingValues: PaddingValues) {
+fun Content1(navController: NavController, paddingValues: PaddingValues, tripViewModel: TripViewModel) {
+    val trips by tripViewModel.trips.collectAsState() // Observe trips from ViewModel
     var showDialog by remember { mutableStateOf(false) }
-    var tripName by remember { mutableStateOf("") }
-    var destinations by remember { mutableStateOf("") }
-    var travelDates by remember { mutableStateOf("") }
-    var participants by remember { mutableStateOf("") }
-    var startDate by remember { mutableStateOf("") }
-    var endDate by remember { mutableStateOf("") }
-
-    val calendar = Calendar.getInstance()
-
-    val startDatePickerDialog = DatePickerDialog(
-        LocalContext.current,
-        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            startDate = "$dayOfMonth/${month + 1}/$year"
-        },
-        calendar.get(Calendar.YEAR),
-        calendar.get(Calendar.MONTH),
-        calendar.get(Calendar.DAY_OF_MONTH)
-    )
-
-    val endDatePickerDialog = DatePickerDialog(
-        LocalContext.current,
-        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            endDate = "$dayOfMonth/${month + 1}/$year"
-        },
-        calendar.get(Calendar.YEAR),
-        calendar.get(Calendar.MONTH),
-        calendar.get(Calendar.DAY_OF_MONTH)
-    )
 
     Box(modifier = Modifier.padding(paddingValues)) {
         Column(
@@ -107,18 +80,24 @@ fun Content1(navController: NavController, paddingValues: PaddingValues) {
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+
             // Bottom Section
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.Bottom,
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(onClick = { navController.navigate(route = "travel1") }) {
-                    Text(text = stringResource(id = R.string.travel_1))
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = { navController.navigate(route = "travel2") }) {
-                    Text(text = stringResource(id = R.string.travel_2))
+                trips.forEach { trip ->
+                    Button(
+                        onClick = { navController.navigate(route = "map") },
+                        modifier = Modifier.padding(8.dp)
+                    ) {
+                        Text(
+                            text = trip.name,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
                 }
             }
         }
@@ -137,67 +116,107 @@ fun Content1(navController: NavController, paddingValues: PaddingValues) {
     }
 
     if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { showDialog = false },
-            title = { Text(text = stringResource(id = R.string.create_trip)) },
-            text = {
-                Column {
-                    Text(text = stringResource(id = R.string.create_trip))
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    OutlinedTextField(
-                        value = tripName,
-                        onValueChange = { tripName = it },
-                        label = { Text(stringResource(id = R.string.trip_name)) }
-                    )
-                    OutlinedTextField(
-                        value = destinations,
-                        onValueChange = { destinations = it },
-                        label = { Text(stringResource(id = R.string.destinations)) }
-                    )
-
-                    Button(
-                        onClick = { startDatePickerDialog.show() },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = if (startDate.isEmpty()) stringResource(id = R.string.start_date)
-                            else startDate
-                        )
-                    }
-
-                    Button(
-                        onClick = { endDatePickerDialog.show() },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = if (endDate.isEmpty()) stringResource(id = R.string.end_date)
-                            else endDate
-                        )
-
-                    }
-
-                    OutlinedTextField(
-                        value = participants,
-                        onValueChange = { participants = it },
-                        label = { Text(stringResource(id = R.string.participants)) }
-                    )
-
-                }
-            },
-            confirmButton = {
-                Button(onClick = {
-                    // Aquí pots gestionar la informació introduïda
-                    showDialog = false
-                }) {
-                    Text(text = stringResource(id = R.string.save_trip))
-                }
-            },
-            dismissButton = {
-                Button(onClick = { showDialog = false }) {
-                    Text(text = stringResource(id = R.string.cancel))
-                }
+        TravelCreatorDialog(
+            onDismiss = { showDialog = false },
+            onSave = { trip ->
+                tripViewModel.addTrip(trip) // Add trip to ViewModel
+                showDialog = false
             }
         )
     }
+}
+
+@Composable
+fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
+    var tripName by remember { mutableStateOf("") }
+    var destinations by remember { mutableStateOf("") }
+    var participants by remember { mutableStateOf("") }
+    var startDate by remember { mutableStateOf("") }
+    var endDate by remember { mutableStateOf("") }
+
+    val calendar = Calendar.getInstance()
+
+    val startDatePickerDialog = DatePickerDialog(
+        LocalContext.current,
+        { _, year, month, dayOfMonth ->
+            startDate = "$dayOfMonth/${month + 1}/$year"
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
+
+    val endDatePickerDialog = DatePickerDialog(
+        LocalContext.current,
+        { _, year, month, dayOfMonth ->
+            endDate = "$dayOfMonth/${month + 1}/$year"
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = stringResource(id = R.string.create_trip)) },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = tripName,
+                    onValueChange = { tripName = it },
+                    label = { Text(stringResource(id = R.string.trip_name)) }
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+
+                OutlinedTextField(
+                    value = destinations,
+                    onValueChange = { destinations = it },
+                    label = { Text(stringResource(id = R.string.destinations)) }
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Button(
+                    onClick = { startDatePickerDialog.show() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = if (startDate.isEmpty()) stringResource(id = R.string.start_date)
+                        else startDate
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Button(
+                    onClick = { endDatePickerDialog.show() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = if (endDate.isEmpty()) stringResource(id = R.string.end_date)
+                        else endDate
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+
+                OutlinedTextField(
+                    value = participants,
+                    onValueChange = { participants = it },
+                    label = { Text(stringResource(id = R.string.participants)) }
+                )
+            }
+        },
+        confirmButton = {
+            Button(onClick = {
+                if (tripName.isNotEmpty()) {
+                    onSave(Trip(tripName, destinations, participants, startDate, endDate))
+                }
+            }) {
+                Text(text = stringResource(id = R.string.save_trip))
+            }
+        },
+        dismissButton = {
+            Button(onClick = onDismiss) {
+                Text(text = stringResource(id = R.string.cancel))
+            }
+        }
+    )
 }
