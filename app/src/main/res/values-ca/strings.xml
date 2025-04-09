@@ -71,4 +71,6 @@
     <string name="save_trip">Desa el Viatge</string>
     <string name="add_trip">Afeixeix Viatge</string>
     <string name="cancel">Cancelar</string>
+    <string name="edit_trip">Editar Viatge</string>
+    <string name="delete_trip">Eliminar Viatge</string>
 </resources>

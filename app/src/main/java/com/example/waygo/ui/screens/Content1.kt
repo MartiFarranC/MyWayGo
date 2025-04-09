@@ -35,7 +35,11 @@ import androidx.compose.material.icons.filled.Person
 import android.app.DatePickerDialog
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.remember
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.waygo.model.Trip
 import com.example.waygo.viewmodel.TripViewModel
@@ -45,6 +49,7 @@ import com.example.waygo.viewmodel.TripViewModel
 fun Content1(navController: NavController, paddingValues: PaddingValues, tripViewModel: TripViewModel) {
     val trips by tripViewModel.trips.collectAsState() // Observe trips from ViewModel
     var showDialog by remember { mutableStateOf(false) }
+    var editDialog by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.padding(paddingValues)) {
         Column(
@@ -88,15 +93,55 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 trips.forEach { trip ->
-                    Button(
-                        onClick = { navController.navigate(route = "map") },
-                        modifier = Modifier.padding(8.dp)
+                    Box(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.primaryContainer)
                     ) {
-                        Text(
-                            text = trip.name,
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(8.dp)
-                        )
+                        Button(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd),
+                            onClick = {},
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = stringResource(id = R.string.profile),
+                            )
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column {
+                                Text(
+                                    text = trip.name,
+                                    style = MaterialTheme.typography.titleLarge,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                                Text(
+                                    text = trip.destinations,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                                Text(
+                                    text = trip.participants,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                                Text(
+                                    text = trip.startDate,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                                Text(
+                                    text = trip.endDate,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -184,7 +229,6 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                         else startDate
                     )
                 }
-                Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
                     onClick = { endDatePickerDialog.show() },
@@ -195,7 +239,6 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                         else endDate
                     )
                 }
-                Spacer(modifier = Modifier.height(20.dp))
 
                 OutlinedTextField(
                     value = participants,
@@ -220,3 +263,7 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
         }
     )
 }
+
+
+@Composable
+fun TravelEditDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {}

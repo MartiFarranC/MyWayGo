@@ -71,4 +71,6 @@
     <string name="save_trip">Save Trip</string>
     <string name="add_trip">Add Trip</string>
     <string name="cancel">Cancel</string>
+    <string name="edit_trip">Edit Trip</string>
+    <string name="delete_trip">Delete Trip</string>
 </resources>
