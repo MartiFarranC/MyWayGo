@@ -14,4 +14,9 @@ class TripViewModel : ViewModel() {
         println("Trip afegit: $trip")
     }
 
+    fun editTrip(trip: Trip) {
+        _trips.value = _trips.value.map { if (it.name == trip.name) trip else it }
+        println("Trip editat: $trip")
+    }
+
 }

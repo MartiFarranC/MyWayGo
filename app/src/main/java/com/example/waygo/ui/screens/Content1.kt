@@ -35,7 +35,11 @@ import androidx.compose.material.icons.filled.Person
 import android.app.DatePickerDialog
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.clip
@@ -50,6 +54,8 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
     val trips by tripViewModel.trips.collectAsState() // Observe trips from ViewModel
     var showDialog by remember { mutableStateOf(false) }
     var editDialog by remember { mutableStateOf(false) }
+    var selectedTrip by remember { mutableStateOf<Trip?>(null) } // Define selectedTrip
+
 
     Box(modifier = Modifier.padding(paddingValues)) {
         Column(
@@ -88,7 +94,9 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
 
             // Bottom Section
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -96,53 +104,58 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
                     Box(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.primaryContainer)
+                            .fillMaxWidth()
                     ) {
-                        Button(
-                            modifier = Modifier
-                                .align(Alignment.TopEnd),
-                            onClick = {},
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Edit,
-                                contentDescription = stringResource(id = R.string.profile),
-                            )
-                        }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column {
+                        Column {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ){
                                 Text(
                                     text = trip.name,
                                     style = MaterialTheme.typography.titleLarge,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    modifier = Modifier.padding(horizontal = 8.dp)
                                 )
-                                Text(
-                                    text = trip.destinations,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
-                                Text(
-                                    text = trip.participants,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
-                                Text(
-                                    text = trip.startDate,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
-                                Text(
-                                    text = trip.endDate,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
+
+                                Button(
+                                    onClick = {
+                                        editDialog = true
+                                        selectedTrip = trip
+                                    }, //TODO boto
+                                    modifier = Modifier.padding(horizontal = 8.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Edit,
+                                        contentDescription = stringResource(id = R.string.profile),
+                                    )
+                                }
                             }
+                            Text(
+                                text = trip.destinations,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                            Text(
+                                text = trip.participants,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                            Text(
+                                text = trip.startDate,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                            Text(
+                                text = trip.endDate,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
                         }
                     }
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }
@@ -166,6 +179,17 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
             onSave = { trip ->
                 tripViewModel.addTrip(trip) // Add trip to ViewModel
                 showDialog = false
+            }
+        )
+    }
+
+    if (editDialog && selectedTrip != null) {
+        TravelEditDialog(
+            trip = selectedTrip!!,
+            onDismiss = { editDialog = false },
+            onSave = { updatedTrip ->
+                tripViewModel.editTrip(updatedTrip)
+                editDialog = false
             }
         )
     }
@@ -266,4 +290,121 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
 
 
 @Composable
-fun TravelEditDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {}
+fun TravelEditDialog(
+    trip: Trip,
+    onDismiss: () -> Unit,
+    onSave: (Trip) -> Unit
+) {
+    var tripName by remember { mutableStateOf(trip.name) }
+    var destinations by remember { mutableStateOf(trip.destinations) }
+    var participants by remember { mutableStateOf(trip.participants) }
+    var startDate by remember { mutableStateOf(trip.startDate) }
+    var endDate by remember { mutableStateOf(trip.endDate) }
+
+    val calendar = Calendar.getInstance()
+
+    val startDatePickerDialog = DatePickerDialog(
+        LocalContext.current,
+        { _, year, month, dayOfMonth ->
+            startDate = "$dayOfMonth/${month + 1}/$year"
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
+
+    val endDatePickerDialog = DatePickerDialog(
+        LocalContext.current,
+        { _, year, month, dayOfMonth ->
+            endDate = "$dayOfMonth/${month + 1}/$year"
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = stringResource(id = R.string.edit_trip))
+                Button(
+                    onClick = {  },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    )
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Cancel,
+                        contentDescription = stringResource(id = R.string.delete_trip),
+                        tint = Color.Red
+                    )
+                }
+
+            }
+        },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = tripName,
+                    onValueChange = { tripName = it },
+                    label = { Text(stringResource(id = R.string.trip_name)) }
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+
+                OutlinedTextField(
+                    value = destinations,
+                    onValueChange = { destinations = it },
+                    label = { Text(stringResource(id = R.string.destinations)) }
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Button(
+                    onClick = { startDatePickerDialog.show() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = if (startDate.isEmpty()) stringResource(id = R.string.start_date)
+                        else startDate
+                    )
+                }
+
+                Button(
+                    onClick = { endDatePickerDialog.show() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = if (endDate.isEmpty()) stringResource(id = R.string.end_date)
+                        else endDate
+                    )
+                }
+
+                OutlinedTextField(
+                    value = participants,
+                    onValueChange = { participants = it },
+                    label = { Text(stringResource(id = R.string.participants)) }
+                )
+            }
+        },
+        confirmButton = {
+            Button(onClick = {
+                if (tripName.isNotEmpty()) {
+                    onSave(Trip(tripName, destinations, participants, startDate, endDate))
+                }
+            }) {
+                Text(text = stringResource(id = R.string.save_trip))
+            }
+        },
+        dismissButton = {
+            Button(onClick = onDismiss) {
+                Text(text = stringResource(id = R.string.cancel))
+            }
+        }
+    )
+}
