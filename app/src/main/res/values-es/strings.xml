@@ -73,4 +73,5 @@
     <string name="cancel">Cancelar</string>
     <string name="edit_trip">Editar Viaje</string>
     <string name="delete_trip">Eliminar Viaje</string>
+    <string name="destination_added">Destinacion añadida!</string>
 </resources>

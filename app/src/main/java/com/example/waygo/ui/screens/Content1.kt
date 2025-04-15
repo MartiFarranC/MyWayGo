@@ -201,10 +201,13 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
 @Composable
 fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
     var tripName by remember { mutableStateOf("") }
-    var destinations by remember { mutableStateOf("") }
-    var participants by remember { mutableStateOf("") }
     var startDate by remember { mutableStateOf("") }
     var endDate by remember { mutableStateOf("") }
+    var newDestination by remember { mutableStateOf("") }
+    var destinations by remember { mutableStateOf(listOf<String>()) }
+    var newParticipants by remember { mutableStateOf("") }
+    var participants by remember { mutableStateOf(listOf<String>()) }
+    var showMessage by remember { mutableStateOf(false) }
 
     val calendar = Calendar.getInstance()
 
@@ -239,12 +242,47 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                     label = { Text(stringResource(id = R.string.trip_name)) }
                 )
                 Spacer(modifier = Modifier.height(20.dp))
+                Row (
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    OutlinedTextField(
+                        value = newDestination,
+                        onValueChange = { newDestination = it },
+                        label = { Text(stringResource(id = R.string.destinations)) },
+                        modifier = Modifier
+                            .weight(1f) // Assigna pes per ocupar espai disponible
+                            .padding(end = 8.dp)
+                    )
 
-                OutlinedTextField(
-                    value = destinations,
-                    onValueChange = { destinations = it },
-                    label = { Text(stringResource(id = R.string.destinations)) }
-                )
+                    IconButton(
+                        onClick = {
+                            if (newDestination.isNotEmpty()) {
+                                destinations = destinations + newDestination // Afegeix el nou participant a la llista
+                                newDestination = "" // Reinicia el camp de text
+                            }
+                        },
+                        modifier = Modifier.padding(start = 8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(id = R.string.add_destination)
+                        )
+                    }
+                }
+
+                if (showMessage) {
+                    Text(
+                        text = stringResource(id = R.string.destination_added),
+                        color = Color.Green,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                    LaunchedEffect(Unit) {
+                        kotlinx.coroutines.delay(2000) // Mostra el missatge durant 2 segons
+                        showMessage = false
+                    }
+                }
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
@@ -267,17 +305,42 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                     )
                 }
 
-                OutlinedTextField(
-                    value = participants,
-                    onValueChange = { participants = it },
-                    label = { Text(stringResource(id = R.string.participants)) }
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OutlinedTextField(
+                        value = newParticipants,
+                        onValueChange = { newParticipants = it },
+                        label = { Text(stringResource(id = R.string.participants)) },
+                        modifier = Modifier
+                            .weight(1f) // Assigna pes per ocupar espai disponible
+                            .padding(end = 8.dp)
+                    )
+                    IconButton(
+                        onClick = {
+                            if (newParticipants.isNotEmpty()) {
+                                participants = participants + newParticipants // Afegeix el nou participant a la llista
+                                newParticipants = "" // Reinicia el camp de text
+                            }
+                        },
+                        modifier = Modifier.padding(start = 8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(id = R.string.add_participant)
+                        )
+                    }
+                }
+
             }
         },
         confirmButton = {
             Button(onClick = {
                 if (tripName.isNotEmpty()) {
-                    onSave(Trip(tripName, destinations, participants, startDate, endDate))
+                    onSave(Trip(tripName, destinations.toString(),
+                        participants.toString(), startDate, endDate))
                 }
             }) {
                 Text(text = stringResource(id = R.string.save_trip))
