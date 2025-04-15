@@ -35,9 +35,11 @@ import androidx.compose.material.icons.filled.Person
 import android.app.DatePickerDialog
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.automirrored.outlined.Help
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -54,8 +56,7 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
     val trips by tripViewModel.trips.collectAsState() // Observe trips from ViewModel
     var showDialog by remember { mutableStateOf(false) }
     var editDialog by remember { mutableStateOf(false) }
-    var selectedTrip by remember { mutableStateOf<Trip?>(null) } // Define selectedTrip
-
+    var selectedTrip by remember { mutableStateOf<Trip?>(null) }
 
     Box(modifier = Modifier.padding(paddingValues)) {
         Column(
@@ -106,11 +107,10 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
                             .background(MaterialTheme.colorScheme.primaryContainer)
                             .fillMaxWidth()
                     ) {
+                        Spacer(modifier = Modifier.height(16.dp))
                         Column {
-                            Spacer(modifier = Modifier.height(16.dp))
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
-
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ){
                                 Text(
@@ -119,7 +119,6 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
                                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                                     modifier = Modifier.padding(horizontal = 8.dp)
                                 )
-
                                 Button(
                                     onClick = {
                                         editDialog = true
@@ -189,6 +188,10 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
             onDismiss = { editDialog = false },
             onSave = { updatedTrip ->
                 tripViewModel.editTrip(updatedTrip)
+                editDialog = false
+            },
+            onDelete = { trip ->
+                tripViewModel.deleteTrip(trip)
                 editDialog = false
             }
         )
@@ -293,7 +296,8 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
 fun TravelEditDialog(
     trip: Trip,
     onDismiss: () -> Unit,
-    onSave: (Trip) -> Unit
+    onSave: (Trip) -> Unit,
+    onDelete: (Trip) -> Unit
 ) {
     var tripName by remember { mutableStateOf(trip.name) }
     var destinations by remember { mutableStateOf(trip.destinations) }
@@ -326,24 +330,26 @@ fun TravelEditDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
                 Text(text = stringResource(id = R.string.edit_trip))
-                Button(
-                    onClick = {  },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary
-                    )
+
+                Box(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .clip(CircleShape)
+                        .background(Color.Red)
+                        .clickable {
+                            onDelete(trip) // Use the onDelete callback to delete the trip
+                        }
+                        .padding(8.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Cancel,
+                        imageVector = Icons.Default.Delete,
                         contentDescription = stringResource(id = R.string.delete_trip),
-                        tint = Color.Red
+                        tint = Color.White // Optional: Add tint for better visibility
                     )
                 }
 

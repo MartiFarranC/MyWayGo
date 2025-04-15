@@ -19,4 +19,8 @@ class TripViewModel : ViewModel() {
         println("Trip editat: $trip")
     }
 
+    fun deleteTrip(trip: Trip) {
+        _trips.value = _trips.value.filter { it.name != trip.name }
+        println("Trip esborrat: $trip")
+    }
 }
