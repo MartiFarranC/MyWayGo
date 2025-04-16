@@ -36,6 +36,7 @@ import android.app.DatePickerDialog
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -124,7 +125,7 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
                                     onClick = {
                                         editDialog = true
                                         selectedTrip = trip
-                                    }, //TODO boto
+                                    },
                                     modifier = Modifier.padding(horizontal = 8.dp)
                                 ) {
                                     Icon(
@@ -134,12 +135,12 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
                                 }
                             }
                             Text(
-                                text = trip.destinations,
+                                text = trip.destinations.replace("[", "").replace("]", ""),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                             Text(
-                                text = trip.participants,
+                                text = trip.participants.replace("[", "").replace("]", ""),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
@@ -273,7 +274,11 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                         )
                     }
                 }
-
+                Text(
+                    text = destinations.joinToString(", "),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
                 if (showMessage) {
                     Popup(
                         alignment = Alignment.Center,
@@ -348,6 +353,11 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                         )
                     }
                 }
+                Text(
+                    text = participants.joinToString(", "),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
 
             }
         },
@@ -371,17 +381,19 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
 
 
 @Composable
-fun TravelEditDialog(
+fun TravelEditDialog( //Todo: S'ha de poder editar títol
     trip: Trip,
     onDismiss: () -> Unit,
     onSave: (Trip) -> Unit,
     onDelete: (Trip) -> Unit
 ) {
     var tripName by remember { mutableStateOf(trip.name) }
-    var destinations by remember { mutableStateOf(trip.destinations) }
-    var participants by remember { mutableStateOf(trip.participants) }
+    var destinations by remember { mutableStateOf(trip.destinations.split(", ")) }
+    var participants by remember { mutableStateOf(trip.participants.split(", ")) }
     var startDate by remember { mutableStateOf(trip.startDate) }
     var endDate by remember { mutableStateOf(trip.endDate) }
+    var showDestinationsDialog by remember { mutableStateOf(false) }
+    var showParticipantsDialog by remember { mutableStateOf(false) }
 
     val calendar = Calendar.getInstance()
 
@@ -411,26 +423,15 @@ fun TravelEditDialog(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
-            ){
+            ) {
                 Text(text = stringResource(id = R.string.edit_trip))
-
-                Box(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .clip(CircleShape)
-                        .background(Color.Red)
-                        .clickable {
-                            onDelete(trip) // Use the onDelete callback to delete the trip
-                        }
-                        .padding(8.dp)
-                ) {
+                IconButton(onClick = { onDelete(trip) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = stringResource(id = R.string.delete_trip),
-                        tint = Color.White // Optional: Add tint for better visibility
+                        tint = Color.Red
                     )
                 }
-
             }
         },
         text = {
@@ -443,15 +444,10 @@ fun TravelEditDialog(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = {
-                        // Mostra un diàleg amb la llista de destinacions
-                        //showMessage = true todo
-                    },
+                    onClick = { showDestinationsDialog = true },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.edit_destination)
-                    )
+                    Text(text = stringResource(id = R.string.edit_destination))
                 }
 
                 Button(
@@ -475,7 +471,7 @@ fun TravelEditDialog(
                 }
 
                 Button(
-                    onClick = { },
+                    onClick = { showParticipantsDialog = true },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
@@ -487,7 +483,7 @@ fun TravelEditDialog(
         confirmButton = {
             Button(onClick = {
                 if (tripName.isNotEmpty()) {
-                    onSave(Trip(tripName, destinations, participants, startDate, endDate))
+                    onSave(Trip(tripName, destinations.joinToString(", "), participants.joinToString(", "), startDate, endDate))
                 }
             }) {
                 Text(text = stringResource(id = R.string.save_trip))
@@ -498,24 +494,81 @@ fun TravelEditDialog(
                 Text(text = stringResource(id = R.string.cancel))
             }
         }
-
     )
-//    if (showMessage) { TODO
-//        AlertDialog(
-//            onDismissRequest = { showMessage = false },
-//            title = { Text(text = stringResource(id = R.string.destinations)) },
-//            text = {
-//                Column {
-//                    destinations.forEach { destination ->
-//                        Text(text = destination)
-//                    }
-//                }
-//            },
-//            confirmButton = {
-//                Button(onClick = { showMessage = false }) {
-//                    Text(text = stringResource(id = R.string.accept))
-//                }
-//            }
-//        )
-//    }
+
+    if (showDestinationsDialog) {
+        AlertDialog(
+            onDismissRequest = { showDestinationsDialog = false },
+            title = { Text(text = stringResource(id = R.string.destinations)) },
+            text = {
+                LazyColumn {
+                    items(destinations.size) { index ->
+                        val destination = destinations[index].replace("[", "").replace("]", "")
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(text = destination, style = MaterialTheme.typography.bodyLarge)
+                            IconButton(onClick = {
+                                val updatedDestinations = destinations.toMutableList()
+                                updatedDestinations.removeAt(index)
+                                destinations = updatedDestinations
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Cancel,
+                                    contentDescription = stringResource(id = R.string.delete_trip),
+                                    tint = Color.Red
+                                )
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Button(onClick = { showDestinationsDialog = false }) {
+                    Text(text = stringResource(id = R.string.accept))
+                }
+            }
+        )
+    }
+
+    if (showParticipantsDialog) {
+        AlertDialog(
+            onDismissRequest = { showParticipantsDialog = false },
+            title = { Text(text = stringResource(id = R.string.participants)) },
+            text = {
+                LazyColumn {
+                    items(participants.size) { index ->
+                        val participant = participants[index].replace("[", "").replace("]", "")
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(text = participant, style = MaterialTheme.typography.bodyLarge)
+                            IconButton(onClick = {
+                                val updatedParticipants = participants.toMutableList()
+                                updatedParticipants.removeAt(index)
+                                participants = updatedParticipants
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Cancel,
+                                    contentDescription = stringResource(id = R.string.delete_trip),
+                                    tint = Color.Red
+                                )
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Button(onClick = { showParticipantsDialog = false }) {
+                    Text(text = stringResource(id = R.string.accept))
+                }
+            }
+        )
+    }
 }
