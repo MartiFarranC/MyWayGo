@@ -74,4 +74,6 @@
     <string name="edit_trip">Editar Viatge</string>
     <string name="delete_trip">Eliminar Viatge</string>
     <string name="destination_added">Destinacó afegida!</string>
+    <string name="edit_destination">Editar les Destinacions</string>
+    <string name="edit_participants">Editar els Participants</string>
 </resources>

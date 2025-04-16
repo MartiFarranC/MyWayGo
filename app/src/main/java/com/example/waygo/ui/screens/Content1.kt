@@ -49,6 +49,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.waygo.model.Trip
 import com.example.waygo.viewmodel.TripViewModel
+import androidx.compose.ui.window.Popup
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
@@ -261,6 +262,7 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                             if (newDestination.isNotEmpty()) {
                                 destinations = destinations + newDestination // Afegeix el nou participant a la llista
                                 newDestination = "" // Reinicia el camp de text
+                                showMessage = true
                             }
                         },
                         modifier = Modifier.padding(start = 8.dp)
@@ -273,16 +275,28 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                 }
 
                 if (showMessage) {
-                    Text(
-                        text = stringResource(id = R.string.destination_added),
-                        color = Color.Green,
-                        modifier = Modifier.padding(top = 8.dp)
-                    )
-                    LaunchedEffect(Unit) {
-                        kotlinx.coroutines.delay(2000) // Mostra el missatge durant 2 segons
-                        showMessage = false
+                    Popup(
+                        alignment = Alignment.Center,
+                        onDismissRequest = { showMessage = false }
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .background(Color.Green)
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.destination_added),
+                                color = Color.White
+                            )
+                        }
+                        LaunchedEffect(Unit) {
+                            kotlinx.coroutines.delay(2000) // Mostra el missatge durant 2 segons
+                            showMessage = false
+                        }
                     }
                 }
+
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
@@ -323,6 +337,7 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                             if (newParticipants.isNotEmpty()) {
                                 participants = participants + newParticipants // Afegeix el nou participant a la llista
                                 newParticipants = "" // Reinicia el camp de text
+                                showMessage = true
                             }
                         },
                         modifier = Modifier.padding(start = 8.dp)
@@ -427,12 +442,17 @@ fun TravelEditDialog(
                 )
                 Spacer(modifier = Modifier.height(20.dp))
 
-                OutlinedTextField(
-                    value = destinations,
-                    onValueChange = { destinations = it },
-                    label = { Text(stringResource(id = R.string.destinations)) }
-                )
-                Spacer(modifier = Modifier.height(20.dp))
+                Button(
+                    onClick = {
+                        // Mostra un diàleg amb la llista de destinacions
+                        //showMessage = true todo
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.edit_destination)
+                    )
+                }
 
                 Button(
                     onClick = { startDatePickerDialog.show() },
@@ -454,11 +474,14 @@ fun TravelEditDialog(
                     )
                 }
 
-                OutlinedTextField(
-                    value = participants,
-                    onValueChange = { participants = it },
-                    label = { Text(stringResource(id = R.string.participants)) }
-                )
+                Button(
+                    onClick = { },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.edit_participants)
+                    )
+                }
             }
         },
         confirmButton = {
@@ -475,5 +498,24 @@ fun TravelEditDialog(
                 Text(text = stringResource(id = R.string.cancel))
             }
         }
+
     )
+//    if (showMessage) { TODO
+//        AlertDialog(
+//            onDismissRequest = { showMessage = false },
+//            title = { Text(text = stringResource(id = R.string.destinations)) },
+//            text = {
+//                Column {
+//                    destinations.forEach { destination ->
+//                        Text(text = destination)
+//                    }
+//                }
+//            },
+//            confirmButton = {
+//                Button(onClick = { showMessage = false }) {
+//                    Text(text = stringResource(id = R.string.accept))
+//                }
+//            }
+//        )
+//    }
 }
