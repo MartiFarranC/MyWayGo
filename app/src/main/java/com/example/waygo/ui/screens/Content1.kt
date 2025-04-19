@@ -384,9 +384,19 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
         },
         confirmButton = {
             Button(onClick = {
-                if (tripName.isNotEmpty()) {
-                    onSave(Trip(tripName, destinations.toString(),
-                        participants.toString(), startDate, endDate))
+                if (tripName.isNotEmpty() && startDate.isNotEmpty() && endDate.isNotEmpty()) {
+                    val startParts = startDate.split("/")
+                    val endParts = endDate.split("/")
+                    if (startParts.size == 3 && endParts.size == 3) {
+                        val startCalendar = Calendar.getInstance()
+                        val endCalendar = Calendar.getInstance()
+                        startCalendar.set(startParts[2].toInt(), startParts[1].toInt() - 1, startParts[0].toInt())
+                        endCalendar.set(endParts[2].toInt(), endParts[1].toInt() - 1, endParts[0].toInt())
+
+                        if (startCalendar.timeInMillis <= endCalendar.timeInMillis) {
+                            onSave(Trip(tripName, destinations.toString(), participants.toString(), startDate, endDate))
+                        }
+                    }
                 }
             }) {
                 Text(text = stringResource(id = R.string.save_trip))
@@ -520,10 +530,21 @@ fun TravelEditDialog(
         },
         confirmButton = {
             Button(onClick = {
-                if (tripName.isNotEmpty()) {
-                    onSave(Trip(tripName, destinations.joinToString(", "), participants.joinToString(", "), startDate, endDate))
+                if (tripName.isNotEmpty() && startDate.isNotEmpty() && endDate.isNotEmpty()) {
+                    val startParts = startDate.split("/")
+                    val endParts = endDate.split("/")
+                    if (startParts.size == 3 && endParts.size == 3) {
+                        val startCalendar = Calendar.getInstance()
+                        val endCalendar = Calendar.getInstance()
+                        startCalendar.set(startParts[2].toInt(), startParts[1].toInt() - 1, startParts[0].toInt())
+                        endCalendar.set(endParts[2].toInt(), endParts[1].toInt() - 1, endParts[0].toInt())
+
+                        if (startCalendar.timeInMillis <= endCalendar.timeInMillis) {
+                            onSave(Trip(tripName, destinations.toString(), participants.toString(), startDate, endDate))
+                        }
+                    }
                 }
-            }) {
+            })  {
                 Text(text = stringResource(id = R.string.save_trip))
             }
         },
