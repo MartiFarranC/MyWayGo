@@ -22,11 +22,10 @@ import com.example.waygo.viewmodel.TripViewModel
 
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(navController: NavHostController, tripViewModel: TripViewModel) {
     NavHost(navController = navController, startDestination = "login") {
         composable("login") { LoginScreen(navController) }
         composable("home") {
-            val tripViewModel = TripViewModel()
             HomeScreenMenu(navController) { innerPadding ->
                 Content1(navController, innerPadding, tripViewModel)
             }

@@ -51,6 +51,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.waygo.model.Trip
 import com.example.waygo.viewmodel.TripViewModel
 import androidx.compose.ui.window.Popup
+import java.util.UUID
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
@@ -324,6 +325,8 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                     )
                 }
 
+                Spacer(modifier = Modifier.height(20.dp))
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -381,7 +384,7 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
 
 
 @Composable
-fun TravelEditDialog( //Todo: S'ha de poder editar títol
+fun TravelEditDialog(
     trip: Trip,
     onDismiss: () -> Unit,
     onSave: (Trip) -> Unit,
