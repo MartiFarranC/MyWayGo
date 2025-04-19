@@ -1,6 +1,7 @@
 package com.example.waygo.ui.screens
 
 //import per a solucionar l'error unresolved reference 'string'
+import android.icu.text.CaseMap.Title
 import com.example.waygo.R
 
 import androidx.compose.foundation.layout.*
@@ -48,18 +49,11 @@ fun HomeScreenMenu(
                     modifier = Modifier.padding(horizontal = 16.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    Spacer(Modifier.height(12.dp))
-                    Text(text = stringResource(id = R.string.app_name), modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleLarge)
-                    HorizontalDivider()
-                    Button(onClick = {
-                        navController.navigate("creator") {
-                            popUpTo("creator") { inclusive = true }
-                        }
-                    }) {
-                        Text(text = stringResource(id = R.string.travel_creator))
-                    }
-
-                    Spacer(Modifier.height(12.dp))
+                    Text(
+                        text = stringResource(id = R.string.app_name),
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(16.dp)
+                    )
 
                     Button(onClick = {
                         navController.navigate("cost") {
@@ -80,23 +74,6 @@ fun HomeScreenMenu(
                     }
 
                     Spacer(Modifier.height(12.dp))
-                    Text(text = stringResource(id = R.string.travels), modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleMedium)
-                    NavigationDrawerItem(
-                        label = { Text(text = stringResource(id = R.string.travel_1)) },
-                        selected = false,
-                        onClick = {
-                            navController.navigate("travel1") {
-                                popUpTo("travel1") { inclusive = true } }
-                        }
-                    )
-                    NavigationDrawerItem(
-                        label = { Text(text = stringResource(id = R.string.travel_2)) },
-                        selected = false,
-                        onClick = {
-                            navController.navigate("travel2") {
-                                popUpTo("travel2") { inclusive = true } }
-                        }
-                    )
 
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
