@@ -34,6 +34,7 @@ import androidx.compose.foundation.background
 import androidx.compose.material.icons.filled.Person
 import android.app.DatePickerDialog
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
@@ -213,11 +214,17 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
     var showMessage by remember { mutableStateOf(false) }
 
     val calendar = Calendar.getInstance()
+    val today = calendar.timeInMillis // Obtenim la data actual en mil·lisegons
 
     val startDatePickerDialog = DatePickerDialog(
         LocalContext.current,
         { _, year, month, dayOfMonth ->
-            startDate = "$dayOfMonth/${month + 1}/$year"
+            val selectedStartDate = Calendar.getInstance()
+            selectedStartDate.set(year, month, dayOfMonth)
+
+            if (selectedStartDate.timeInMillis >= today) {
+                startDate = "$dayOfMonth/${month + 1}/$year"
+            }
         },
         calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH),
@@ -227,7 +234,18 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
     val endDatePickerDialog = DatePickerDialog(
         LocalContext.current,
         { _, year, month, dayOfMonth ->
-            endDate = "$dayOfMonth/${month + 1}/$year"
+            val selectedEndDate = Calendar.getInstance()
+            selectedEndDate.set(year, month, dayOfMonth)
+
+            val selectedStartDate = Calendar.getInstance()
+            val startParts = startDate.split("/")
+            if (startParts.size == 3) {
+                selectedStartDate.set(startParts[2].toInt(), startParts[1].toInt() - 1, startParts[0].toInt())
+            }
+
+            if (selectedEndDate.timeInMillis >= today && selectedEndDate.timeInMillis >= selectedStartDate.timeInMillis){
+                endDate = "$dayOfMonth/${month + 1}/$year"
+            }
         },
         calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH),
@@ -380,7 +398,7 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
             }
         }
     )
-}
+} //TODO: No poder guardar viatge si StartDate < EndDate
 
 
 @Composable
@@ -399,11 +417,17 @@ fun TravelEditDialog(
     var showParticipantsDialog by remember { mutableStateOf(false) }
 
     val calendar = Calendar.getInstance()
+    val today = calendar.timeInMillis
 
     val startDatePickerDialog = DatePickerDialog(
         LocalContext.current,
         { _, year, month, dayOfMonth ->
-            startDate = "$dayOfMonth/${month + 1}/$year"
+            val selectedStartDate = Calendar.getInstance()
+            selectedStartDate.set(year, month, dayOfMonth)
+
+            if (selectedStartDate.timeInMillis >= today) {
+                startDate = "$dayOfMonth/${month + 1}/$year"
+            }
         },
         calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH),
@@ -413,7 +437,18 @@ fun TravelEditDialog(
     val endDatePickerDialog = DatePickerDialog(
         LocalContext.current,
         { _, year, month, dayOfMonth ->
-            endDate = "$dayOfMonth/${month + 1}/$year"
+            val selectedEndDate = Calendar.getInstance()
+            selectedEndDate.set(year, month, dayOfMonth)
+
+            val selectedStartDate = Calendar.getInstance()
+            val startParts = startDate.split("/")
+            if (startParts.size == 3) {
+                selectedStartDate.set(startParts[2].toInt(), startParts[1].toInt() - 1, startParts[0].toInt())
+            }
+
+            if (selectedEndDate.timeInMillis >= today && selectedEndDate.timeInMillis >= selectedStartDate.timeInMillis){
+                endDate = "$dayOfMonth/${month + 1}/$year"
+            }
         },
         calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH),
@@ -574,4 +609,4 @@ fun TravelEditDialog(
             }
         )
     }
-}
+} //TODO: Poder editar nom viatge, No poder guardar viatge si StartDate < EndDate
