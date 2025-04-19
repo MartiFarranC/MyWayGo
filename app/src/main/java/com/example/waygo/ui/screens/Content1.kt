@@ -28,31 +28,23 @@ import com.example.waygo.R
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.background
 import androidx.compose.material.icons.filled.Person
 import android.app.DatePickerDialog
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.automirrored.outlined.Help
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.remember
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.waygo.model.Trip
 import com.example.waygo.viewmodel.TripViewModel
 import androidx.compose.ui.window.Popup
-import java.util.UUID
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
@@ -67,7 +59,6 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            // Header Section
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -408,7 +399,7 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
             }
         }
     )
-} //TODO: No poder guardar viatge si StartDate < EndDate
+}
 
 
 @Composable
@@ -630,4 +621,4 @@ fun TravelEditDialog(
             }
         )
     }
-} //TODO: Poder editar nom viatge, No poder guardar viatge si StartDate < EndDate
+}
