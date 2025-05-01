@@ -9,7 +9,9 @@ import java.time.LocalDateTime
 data class TripEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
-    val startDate: Int,
-    val durationDays: Int
+    val destinations: String,
+    val participants: String,
+    val startDate: String,
+    val endDate: String
 )
 
