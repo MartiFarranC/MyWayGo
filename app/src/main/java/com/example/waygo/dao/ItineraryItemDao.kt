@@ -6,17 +6,17 @@ import com.example.waygo.entity.ItineraryItemEntity
 @Dao
 interface ItineraryItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertItineraryItem(item: ItineraryItemEntity)
+    suspend fun addItinerary(item: ItineraryItemEntity)
+
+    @Query("SELECT * FROM ItineraryItemEntity WHERE id = :id")
+    suspend fun getItineraryById(id: Int): ItineraryItemEntity?
+
+    @Query("SELECT * FROM ItineraryItemEntity")
+    suspend fun getAllItineraries(): List<ItineraryItemEntity>
 
     @Update
-    suspend fun updateItineraryItem(item: ItineraryItemEntity)
+    suspend fun updateItinerary(item: ItineraryItemEntity)
 
     @Delete
-    suspend fun deleteItineraryItem(item: ItineraryItemEntity)
-
-    @Query("SELECT * FROM ItineraryItem WHERE tripId = :tripId ORDER BY `order` ASC")
-    suspend fun getItineraryItemsByTripId(tripId: Int): List<ItineraryItemEntity>
-
-    @Query("SELECT * FROM ItineraryItem WHERE id = :id")
-    suspend fun getItineraryItemById(id: Int): ItineraryItemEntity?
+    suspend fun deleteItinerary(item: ItineraryItemEntity)
 }

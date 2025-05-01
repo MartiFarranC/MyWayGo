@@ -1,24 +1,27 @@
 package com.example.waygo.repository
 
-import com.example.waygo.model.ItineraryItem
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.example.waygo.dao.ItineraryItemDao
+import com.example.waygo.entity.ItineraryItemEntity
 
-class ItineraryRepository {
-    private val _itineraryItems = MutableStateFlow<List<ItineraryItem>>(emptyList())
-    val itineraryItems: StateFlow<List<ItineraryItem>> get() = _itineraryItems
+class ItineraryRepository(private val ItineraryItemDao: ItineraryItemDao) {
 
-    fun addActivity(activity: ItineraryItem) {
-        _itineraryItems.value = _itineraryItems.value + activity
+    suspend fun addItinerary(itinerary: ItineraryItemEntity) {
+        ItineraryItemDao.addItinerary(itinerary)
     }
 
-    fun updateActivity(updatedActivity: ItineraryItem) {
-        _itineraryItems.value = _itineraryItems.value.map {
-            if (it.id == updatedActivity.id) updatedActivity else it
-        }
+    suspend fun getItineraryById(id: Int): ItineraryItemEntity? {
+        return ItineraryItemDao.getItineraryById(id)
     }
 
-    fun deleteActivity(activityId: String) {
-        _itineraryItems.value = _itineraryItems.value.filter { it.id != activityId }
+    suspend fun getAllItineraries(): List<ItineraryItemEntity> {
+        return ItineraryItemDao.getAllItineraries()
+    }
+
+    suspend fun updateItinerary(itinerary: ItineraryItemEntity) {
+        ItineraryItemDao.updateItinerary(itinerary)
+    }
+
+    suspend fun deleteItinerary(itinerary: ItineraryItemEntity) {
+        ItineraryItemDao.deleteItinerary(itinerary)
     }
 }
