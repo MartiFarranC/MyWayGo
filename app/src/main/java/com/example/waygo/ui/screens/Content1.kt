@@ -180,6 +180,7 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
     if (editDialog && selectedTrip != null) {
         TravelEditDialog(
             trip = selectedTrip!!,
+            tripViewModel = tripViewModel,
             onDismiss = { editDialog = false },
             onSave = { updatedTrip ->
                 tripViewModel.editTrip(updatedTrip)
@@ -195,6 +196,7 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
 
 @Composable
 fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
+    var id by remember { mutableStateOf(0) }
     var tripName by remember { mutableStateOf("") }
     var startDate by remember { mutableStateOf("") }
     var endDate by remember { mutableStateOf("") }
@@ -385,8 +387,7 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                         endCalendar.set(endParts[2].toInt(), endParts[1].toInt() - 1, endParts[0].toInt())
 
                         if (startCalendar.timeInMillis <= endCalendar.timeInMillis) {
-                            onSave(Trip(tripName, destinations.toString(), participants.toString(), startDate, endDate))
-                        }
+                            onSave(Trip(id, tripName, destinations.joinToString(", "), participants.joinToString(", "), startDate, endDate))                        }
                     }
                 }
             }) {
@@ -405,10 +406,13 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
 @Composable
 fun TravelEditDialog(
     trip: Trip,
+    tripViewModel: TripViewModel,
     onDismiss: () -> Unit,
     onSave: (Trip) -> Unit,
     onDelete: (Trip) -> Unit
 ) {
+    val trips by tripViewModel.trips.collectAsState()
+    var id by remember { mutableStateOf(trip.id) }
     var tripName by remember { mutableStateOf(trip.name) }
     var destinations by remember { mutableStateOf(trip.destinations.split(", ")) }
     var participants by remember { mutableStateOf(trip.participants.split(", ")) }
@@ -531,8 +535,7 @@ fun TravelEditDialog(
                         endCalendar.set(endParts[2].toInt(), endParts[1].toInt() - 1, endParts[0].toInt())
 
                         if (startCalendar.timeInMillis <= endCalendar.timeInMillis) {
-                            onSave(Trip(tripName, destinations.toString(), participants.toString(), startDate, endDate))
-                        }
+                            onSave(Trip(id, tripName, destinations.joinToString(", "), participants.joinToString(", "), startDate, endDate))                        }
                     }
                 }
             })  {

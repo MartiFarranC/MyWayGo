@@ -1,5 +1,6 @@
 package com.example.waygo
 
+import com.example.waygo.dao.FakeTripDao
 import com.example.waygo.model.Trip
 import com.example.waygo.viewmodel.TripViewModel
 import kotlinx.coroutines.flow.first
@@ -14,13 +15,14 @@ class TripViewModelTest {
 
     @Before
     fun setup() {
-        // Initialize the ViewModel with a mock or fake repository
-        tripViewModel = TripViewModel()
+        val fakeTripDao = FakeTripDao() // Replace with a mock or fake implementation
+        tripViewModel = TripViewModel(fakeTripDao)
     }
 
     @Test
     fun `test add trip`() = runBlocking {
         val trip = Trip(
+            id = 1,
             name = "Test Trip",
             destinations = "Paris, London",
             participants = "Alice, Bob",
@@ -36,8 +38,8 @@ class TripViewModelTest {
 
     @Test
     fun `test get trips`() = runBlocking {
-        val trip1 = Trip("Trip 1", "Paris", "Alice", "01/01/2024", "05/01/2024")
-        val trip2 = Trip("Trip 2", "London", "Bob", "06/01/2024", "10/01/2024")
+        val trip1 = Trip(2, "Trip 1", "Paris", "Alice", "01/01/2024", "05/01/2024")
+        val trip2 = Trip(3, "Trip 2", "London", "Bob", "06/01/2024", "10/01/2024")
 
         tripViewModel.addTrip(trip1)
         tripViewModel.addTrip(trip2)
@@ -51,7 +53,7 @@ class TripViewModelTest {
 
     @Test
     fun `test update trip`() = runBlocking {
-        val trip = Trip("Trip 1", "Paris", "Alice", "01/01/2024", "05/01/2024")
+        val trip = Trip(1, "Trip 0", "Roma", "Alicia", "01/01/2025", "05/01/2025")
         tripViewModel.addTrip(trip)
 
         val updatedTrip = trip.copy(name = "Trip 1", destinations = "London")
@@ -66,7 +68,7 @@ class TripViewModelTest {
 
     @Test
     fun `test delete trip`() = runBlocking {
-        val trip = Trip("Trip 1", "Paris", "Alice", "01/01/2024", "05/01/2024")
+        val trip = Trip(1, "Trip 1", "Paris", "Alice", "01/01/2024", "05/01/2024")
         tripViewModel.addTrip(trip)
 
         tripViewModel.deleteTrip(trip)

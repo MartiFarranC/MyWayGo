@@ -9,6 +9,7 @@ import com.example.waygo.entity.ItineraryItemEntity
 import com.example.waygo.entity.TripEntity
 import com.example.waygo.dao.TripDao
 import com.example.waygo.dao.ItineraryItemDao
+import com.example.waygo.model.Trip
 
 @Database(
     entities = [TripEntity::class, ItineraryItemEntity::class],

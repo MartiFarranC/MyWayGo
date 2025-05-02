@@ -48,6 +48,7 @@ class TripViewModel(private val tripDao: TripDao) : ViewModel() {
 
     private fun TripEntity.toTrip(): Trip {
         return Trip(
+            id = this.id,
             name = this.name,
             destinations = this.destinations,
             participants = this.participants,
@@ -58,17 +59,12 @@ class TripViewModel(private val tripDao: TripDao) : ViewModel() {
 
     private fun Trip.toEntity(): TripEntity {
         return TripEntity(
-            id = 0, // Replace with actual ID if available
+            id = this.id,
             name = this.name,
             destinations = this.destinations,
             participants = this.participants,
             startDate = this.startDate,
-            endDate = this.endDate,
+            endDate = this.endDate
         )
-    }
-
-    private fun calculateDurationDays(startDate: String, endDate: String): Int {
-        // Implement logic to calculate duration in days
-        return 0 // Placeholder
     }
 }
