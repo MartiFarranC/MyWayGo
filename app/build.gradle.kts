@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.protolite.well.known.types)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.media3.common.ktx)
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -82,5 +83,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-
+    testImplementation("androidx.room:room-testing:2.6.1")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 }
