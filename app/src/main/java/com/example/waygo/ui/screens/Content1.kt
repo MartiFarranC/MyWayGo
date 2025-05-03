@@ -35,6 +35,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Delete
@@ -293,12 +294,12 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                 )
                 if (showMessage) {
                     Popup(
-                        alignment = Alignment.Center,
+                        alignment = Alignment.TopCenter,
                         onDismissRequest = { showMessage = false }
                     ) {
                         Box(
                             modifier = Modifier
-                                .background(Color.Green)
+                                .background(Color.Green.copy(alpha = 0.8f), shape =  RoundedCornerShape(8.dp)) // Color translúcid i puntes rodones
                                 .padding(16.dp),
                             contentAlignment = Alignment.Center
                         ) {
@@ -312,6 +313,7 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                             showMessage = false
                         }
                     }
+
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))

@@ -76,5 +76,6 @@
     <string name="destination_added">Destinacion añadida!</string>
     <string name="edit_destination">Editar las Destinaciones</string>
     <string name="edit_participants">Editar los Participantes</string>
+    <string name="incorrect_credentials">Credenciales Incorrectas</string>
 
 </resources>

@@ -76,4 +76,6 @@
     <string name="destination_added">Destination added successfully!</string>
     <string name="edit_destination">Edit Destinations</string>
     <string name="edit_participants">Edit Participants</string>
+    <string name="incorrect_credentials">Incorrect Credentials</string>
+
 </resources>
