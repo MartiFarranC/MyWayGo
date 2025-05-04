@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.waygo.database.AppDatabase
 import com.example.waygo.ui.screens.Content1
 import com.example.waygo.ui.screens.HomeScreenMenu
 import com.example.waygo.ui.screens.LoginScreen
@@ -20,8 +21,10 @@ import com.example.waygo.viewmodel.TripViewModel
 
 @Composable
 fun NavGraph(navController: NavHostController, tripViewModel: TripViewModel) {
+    val userDao = AppDatabase.getInstance(navController.context).userDao()
+
     NavHost(navController = navController, startDestination = "login") {
-        composable("login") { LoginScreen(navController) }
+        composable("login") { LoginScreen(navController, userDao) }
         composable("home") {
             HomeScreenMenu(navController) { innerPadding ->
                 Content1(navController, innerPadding, tripViewModel)
@@ -29,7 +32,7 @@ fun NavGraph(navController: NavHostController, tripViewModel: TripViewModel) {
         }
         composable("profile") { ProfileScreen(navController) }
         composable("profileMenu") { ProfileScreen(navController) }
-        composable("register") { RegisterScreen(navController) }
+        composable("register") { RegisterScreen(navController, userDao) }
         composable("terms") { TermConditionsScreen(navController) }
         composable("about") { AboutScreen(navController) }
         composable("cost") { CostsScreen(navController) }

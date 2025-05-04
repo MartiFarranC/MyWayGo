@@ -23,18 +23,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Popup
 import com.example.waygo.R
+import com.example.waygo.dao.UserDao
+import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController,  userDao: UserDao) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showMessage by remember { mutableStateOf(false) }
 
     // Llista d'usuaris de prova
-    val testUsers = mapOf(
-        "user1" to "password1",
-        "user2" to "password2"
-    )
+//    val testUsers = mapOf(
+//        "user1" to "password1",
+//        "user2" to "password2"
+//    )
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -57,14 +59,18 @@ fun LoginScreen(navController: NavController) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
         Spacer(modifier = Modifier.height(20.dp))
+        val coroutineScope = rememberCoroutineScope()
         Button(onClick = {
-            if (testUsers[username] == password) {
-                // Navegar a la pantalla principal si les credencials són correctes
-                navController.navigate("home") {
-                    popUpTo("login") { inclusive = true }
+            coroutineScope.launch {
+                val user = userDao.getUserByEmail(username)
+                if (user != null && user.hashedPassword == hashPassword(password)) {
+                    navController.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                } else {
+                    showMessage = true
                 }
-            } else {
-                showMessage = true            }
+            }
         }) {
             Text(text = stringResource(id = R.string.login))
         }

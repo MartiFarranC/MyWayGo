@@ -19,9 +19,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.example.waygo.R
+import com.example.waygo.dao.UserDao
+import com.example.waygo.entity.UserEntity
+import kotlinx.coroutines.launch
+import java.security.MessageDigest
 
 @Composable
-fun RegisterScreen(navController: NavController) {
+fun RegisterScreen(navController: NavController, userDao: UserDao) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordConfirm by remember { mutableStateOf("") }
@@ -62,10 +66,24 @@ fun RegisterScreen(navController: NavController) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
         Spacer(modifier = Modifier.height(20.dp))
+        val coroutineScope = rememberCoroutineScope()
         Button(onClick = {
-            // Navigate to Home and remove Login from the back stack
-            navController.navigate("home") {
-                popUpTo("register") { inclusive = true }
+            if (password == passwordConfirm && username.isNotEmpty() && mail.isNotEmpty()) {
+                val hashedPassword = hashPassword(password)
+                val newUser = UserEntity(email = mail, username = username, hashedPassword = hashedPassword)
+
+                coroutineScope.launch {
+                    try {
+                        userDao.registerUser(newUser)
+                        navController.navigate("login") {
+                            popUpTo("register") { inclusive = true }
+                        }
+                    } catch (e: Exception) {
+                        // TODO: Handle error (e.g., user already exists)
+                    }
+                }
+            } else {
+                // TODO: Handle error (e.g., passwords do not match)
             }
         }) {
             Text(text = stringResource(id = R.string.register))
@@ -94,4 +112,10 @@ fun RegisterScreen(navController: NavController) {
             }
         }
     }
+}
+
+fun hashPassword(password: String): String {
+    val digest = MessageDigest.getInstance("SHA-256")
+    val hashBytes = digest.digest(password.toByteArray())
+    return hashBytes.joinToString("") { "%02x".format(it) }
 }

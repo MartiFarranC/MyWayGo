@@ -9,16 +9,19 @@ import com.example.waygo.entity.ItineraryItemEntity
 import com.example.waygo.entity.TripEntity
 import com.example.waygo.dao.TripDao
 import com.example.waygo.dao.ItineraryItemDao
+import com.example.waygo.dao.UserDao
+import com.example.waygo.entity.UserEntity
 import com.example.waygo.model.Trip
 
 @Database(
-    entities = [TripEntity::class, ItineraryItemEntity::class],
-    version = 1,
+    entities = [TripEntity::class, ItineraryItemEntity::class, UserEntity::class],
+    version = 2, // Incremented version
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun tripDao(): TripDao
     abstract fun itineraryItemDao(): ItineraryItemDao
+    abstract fun userDao(): UserDao
 
     companion object {
         @Volatile
@@ -30,7 +33,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "waygo_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // Allows destructive migration TODO: ??
+                    .build()
                 INSTANCE = instance
                 instance
             }
