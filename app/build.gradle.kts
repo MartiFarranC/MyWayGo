@@ -11,8 +11,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.waygo"
-        //minSdk = 26
-        minSdk = 24 //TODO:
+        minSdk = 26
+//        minSdk = 24 //TODO:
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"

@@ -1,6 +1,8 @@
 package com.example.waygo.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -16,8 +18,10 @@ import androidx.compose.runtime.mutableStateOf
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.window.Popup
 import com.example.waygo.R
 import com.example.waygo.dao.UserDao
 import com.example.waygo.entity.UserEntity
@@ -30,6 +34,8 @@ fun RegisterScreen(navController: NavController, userDao: UserDao) {
     var password by remember { mutableStateOf("") }
     var passwordConfirm by remember { mutableStateOf("") }
     var mail by remember { mutableStateOf("") }
+    var showMessage by remember { mutableStateOf(false) }
+    var message by remember { mutableStateOf(0) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -79,11 +85,13 @@ fun RegisterScreen(navController: NavController, userDao: UserDao) {
                             popUpTo("register") { inclusive = true }
                         }
                     } catch (e: Exception) {
-                        // TODO: Handle error (e.g., user already exists)
+                        message = R.string.register_error
+                        showMessage = true
                     }
                 }
             } else {
-                // TODO: Handle error (e.g., passwords do not match)
+                message = R.string.password_error
+                showMessage = true
             }
         }) {
             Text(text = stringResource(id = R.string.register))
@@ -109,6 +117,28 @@ fun RegisterScreen(navController: NavController, userDao: UserDao) {
             Spacer(modifier = Modifier.width(8.dp))
             Button(onClick = { navController.navigate("terms") }) {
                 Text(text = stringResource(id = R.string.terms_and_conditions))
+            }
+        }
+    }
+    if (showMessage) {
+        Popup(
+            alignment = Alignment.TopCenter,
+            onDismissRequest = { showMessage = false }
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(Color.Red.copy(alpha = 0.8f), shape =  RoundedCornerShape(8.dp)) // Color translúcid i puntes rodones
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(id = message),
+                    color = Color.White
+                )
+            }
+            LaunchedEffect(Unit) {
+                kotlinx.coroutines.delay(2000) // Mostra el missatge durant 2 segons
+                showMessage = false
             }
         }
     }

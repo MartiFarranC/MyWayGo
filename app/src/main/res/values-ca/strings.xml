@@ -77,5 +77,8 @@
     <string name="edit_destination">Editar les Destinacions</string>
     <string name="edit_participants">Editar els Participants</string>
     <string name="incorrect_credentials">Credencials Incorrectes</string>
+    <string name="register_error">Aquest Usuari ja Existeix</string>
+    <string name="password_error">Les Contrassenyes NO Coinsideixen</string>
+
 
 </resources>
