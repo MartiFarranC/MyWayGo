@@ -1,17 +1,17 @@
-package com.example.waygo.entity;
+package com.example.waygo.entity
 
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.util.Date
+import androidx.room.Query
+import java.time.LocalDateTime
 
-@Entity(tableName = "trips")
+@Entity
 data class TripEntity(
-        @PrimaryKey(autoGenerate = true) val id: Int = 0,
-        val name: String,
-        val destinations: String,
-        val participants: String,
-        val startDate: Date,
-        val endDate: Date
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val name: String,
+    val destinations: String,
+    val participants: String,
+    val startDate: String,
+    val endDate: String
 )
 

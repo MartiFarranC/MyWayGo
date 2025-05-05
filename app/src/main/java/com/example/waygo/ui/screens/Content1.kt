@@ -35,6 +35,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Delete
@@ -180,6 +181,7 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
     if (editDialog && selectedTrip != null) {
         TravelEditDialog(
             trip = selectedTrip!!,
+            tripViewModel = tripViewModel,
             onDismiss = { editDialog = false },
             onSave = { updatedTrip ->
                 tripViewModel.editTrip(updatedTrip)
@@ -195,6 +197,7 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
 
 @Composable
 fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
+    var id by remember { mutableStateOf(0) }
     var tripName by remember { mutableStateOf("") }
     var startDate by remember { mutableStateOf("") }
     var endDate by remember { mutableStateOf("") }
@@ -291,12 +294,12 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                 )
                 if (showMessage) {
                     Popup(
-                        alignment = Alignment.Center,
+                        alignment = Alignment.TopCenter,
                         onDismissRequest = { showMessage = false }
                     ) {
                         Box(
                             modifier = Modifier
-                                .background(Color.Green)
+                                .background(Color.Green.copy(alpha = 0.8f), shape =  RoundedCornerShape(8.dp)) // Color translúcid i puntes rodones
                                 .padding(16.dp),
                             contentAlignment = Alignment.Center
                         ) {
@@ -310,6 +313,7 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                             showMessage = false
                         }
                     }
+
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -385,8 +389,7 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                         endCalendar.set(endParts[2].toInt(), endParts[1].toInt() - 1, endParts[0].toInt())
 
                         if (startCalendar.timeInMillis <= endCalendar.timeInMillis) {
-                            onSave(Trip(tripName, destinations.toString(), participants.toString(), startDate, endDate))
-                        }
+                            onSave(Trip(id, tripName, destinations.joinToString(", "), participants.joinToString(", "), startDate, endDate))                        }
                     }
                 }
             }) {
@@ -405,10 +408,13 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
 @Composable
 fun TravelEditDialog(
     trip: Trip,
+    tripViewModel: TripViewModel,
     onDismiss: () -> Unit,
     onSave: (Trip) -> Unit,
     onDelete: (Trip) -> Unit
 ) {
+    val trips by tripViewModel.trips.collectAsState()
+    var id by remember { mutableStateOf(trip.id) }
     var tripName by remember { mutableStateOf(trip.name) }
     var destinations by remember { mutableStateOf(trip.destinations.split(", ")) }
     var participants by remember { mutableStateOf(trip.participants.split(", ")) }
@@ -416,6 +422,8 @@ fun TravelEditDialog(
     var endDate by remember { mutableStateOf(trip.endDate) }
     var showDestinationsDialog by remember { mutableStateOf(false) }
     var showParticipantsDialog by remember { mutableStateOf(false) }
+    var newDestination by remember { mutableStateOf("") }
+    var newParticipants by remember { mutableStateOf("") }
 
     val calendar = Calendar.getInstance()
     val today = calendar.timeInMillis
@@ -531,8 +539,7 @@ fun TravelEditDialog(
                         endCalendar.set(endParts[2].toInt(), endParts[1].toInt() - 1, endParts[0].toInt())
 
                         if (startCalendar.timeInMillis <= endCalendar.timeInMillis) {
-                            onSave(Trip(tripName, destinations.toString(), participants.toString(), startDate, endDate))
-                        }
+                            onSave(Trip(id, tripName, destinations.joinToString(", "), participants.joinToString(", "), startDate, endDate))                        }
                     }
                 }
             })  {
@@ -551,26 +558,55 @@ fun TravelEditDialog(
             onDismissRequest = { showDestinationsDialog = false },
             title = { Text(text = stringResource(id = R.string.destinations)) },
             text = {
-                LazyColumn {
-                    items(destinations.size) { index ->
-                        val destination = destinations[index].replace("[", "").replace("]", "")
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(text = destination, style = MaterialTheme.typography.bodyLarge)
-                            IconButton(onClick = {
-                                val updatedDestinations = destinations.toMutableList()
-                                updatedDestinations.removeAt(index)
-                                destinations = updatedDestinations
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Default.Cancel,
-                                    contentDescription = stringResource(id = R.string.delete_trip),
-                                    tint = Color.Red
-                                )
+                Column {
+                    // Afegir nova destinació
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedTextField(
+                            value = newDestination,
+                            onValueChange = { newDestination = it },
+                            label = { Text(stringResource(id = R.string.add_destination)) },
+                            modifier = Modifier.weight(1f)
+                        )
+                        IconButton(onClick = {
+                            if (newDestination.isNotEmpty()) {
+                                destinations = destinations + newDestination
+                                newDestination = ""
+                            }
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = stringResource(id = R.string.add_destination)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    LazyColumn {
+                        items(destinations.size) { index ->
+                            val destination = destinations[index].replace("[", "").replace("]", "")
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(text = destination, style = MaterialTheme.typography.bodyLarge)
+                                IconButton(onClick = {
+                                    val updatedDestinations = destinations.toMutableList()
+                                    updatedDestinations.removeAt(index)
+                                    destinations = updatedDestinations
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Cancel,
+                                        contentDescription = stringResource(id = R.string.delete_trip),
+                                        tint = Color.Red
+                                    )
+                                }
                             }
                         }
                     }
@@ -589,29 +625,56 @@ fun TravelEditDialog(
             onDismissRequest = { showParticipantsDialog = false },
             title = { Text(text = stringResource(id = R.string.participants)) },
             text = {
-                LazyColumn {
-                    items(participants.size) { index ->
-                        val participant = participants[index].replace("[", "").replace("]", "")
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(text = participant, style = MaterialTheme.typography.bodyLarge)
-                            IconButton(onClick = {
-                                val updatedParticipants = participants.toMutableList()
-                                updatedParticipants.removeAt(index)
-                                participants = updatedParticipants
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Default.Cancel,
-                                    contentDescription = stringResource(id = R.string.delete_trip),
-                                    tint = Color.Red
-                                )
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedTextField(
+                            value = newParticipants,
+                            onValueChange = { newParticipants = it },
+                            label = { Text(stringResource(id = R.string.add_destination)) },
+                            modifier = Modifier.weight(1f)
+                        )
+                        IconButton(onClick = {
+                            if (newParticipants.isNotEmpty()) {
+                                participants = participants + newParticipants
+                                newParticipants = ""
                             }
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = stringResource(id = R.string.add_destination)
+                            )
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                        LazyColumn {
+                            items(participants.size) { index ->
+                                val participant = participants[index].replace("[", "").replace("]", "")
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(8.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(text = participant, style = MaterialTheme.typography.bodyLarge)
+                                    IconButton(onClick = {
+                                        val updatedParticipants = participants.toMutableList()
+                                        updatedParticipants.removeAt(index)
+                                        participants = updatedParticipants
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Default.Cancel,
+                                            contentDescription = stringResource(id = R.string.delete_trip),
+                                            tint = Color.Red
+                                        )
+                                    }
+                                }
+                            }
+                        }
                 }
             },
             confirmButton = {

@@ -3,20 +3,21 @@ package com.example.waygo.dao
 import androidx.room.*
 import com.example.waygo.entity.ItineraryItemEntity
 
+//TODO: Log.d...
 @Dao
 interface ItineraryItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertItineraryItem(item: ItineraryItemEntity)
+    suspend fun addItinerary(item: ItineraryItemEntity)
+
+    @Query("SELECT * FROM ItineraryItemEntity WHERE id = :id")
+    suspend fun getItineraryById(id: Int): ItineraryItemEntity?
+
+    @Query("SELECT * FROM ItineraryItemEntity")
+    suspend fun getAllItineraries(): List<ItineraryItemEntity>
 
     @Update
-    suspend fun updateItineraryItem(item: ItineraryItemEntity)
+    suspend fun updateItinerary(item: ItineraryItemEntity)
 
     @Delete
-    suspend fun deleteItineraryItem(item: ItineraryItemEntity)
-
-    @Query("SELECT * FROM itinerary_items WHERE id = :id")
-    suspend fun getItineraryItemById(id: Int): ItineraryItemEntity?
-
-    @Query("SELECT * FROM itinerary_items WHERE tripId = :tripId")
-    suspend fun getItineraryItemsByTripId(tripId: Int): List<ItineraryItemEntity>
+    suspend fun deleteItinerary(item: ItineraryItemEntity)
 }

@@ -1,14 +1,12 @@
-package com.example.waygo.entity;
+package com.example.waygo.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
+import java.time.LocalDateTime
 
-@Entity(tableName = "itinerary_items")
+@Entity
 data class ItineraryItemEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val tripId: Int, // Foreign key to associate with a Trip
-    val title: String,
+    val tripId: Int,
     val description: String,
-    val date: Date
 )

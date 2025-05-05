@@ -1,6 +1,8 @@
 package com.example.waygo.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -16,16 +18,24 @@ import androidx.compose.runtime.mutableStateOf
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.window.Popup
 import com.example.waygo.R
+import com.example.waygo.dao.UserDao
+import com.example.waygo.entity.UserEntity
+import kotlinx.coroutines.launch
+import java.security.MessageDigest
 
 @Composable
-fun RegisterScreen(navController: NavController) {
+fun RegisterScreen(navController: NavController, userDao: UserDao) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordConfirm by remember { mutableStateOf("") }
     var mail by remember { mutableStateOf("") }
+    var showMessage by remember { mutableStateOf(false) }
+    var message by remember { mutableStateOf(0) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -62,10 +72,26 @@ fun RegisterScreen(navController: NavController) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
         Spacer(modifier = Modifier.height(20.dp))
+        val coroutineScope = rememberCoroutineScope()
         Button(onClick = {
-            // Navigate to Home and remove Login from the back stack
-            navController.navigate("home") {
-                popUpTo("register") { inclusive = true }
+            if (password == passwordConfirm && username.isNotEmpty() && mail.isNotEmpty()) {
+                val hashedPassword = hashPassword(password)
+                val newUser = UserEntity(email = mail, username = username, hashedPassword = hashedPassword)
+
+                coroutineScope.launch {
+                    try {
+                        userDao.registerUser(newUser)
+                        navController.navigate("login") {
+                            popUpTo("register") { inclusive = true }
+                        }
+                    } catch (e: Exception) {
+                        message = R.string.register_error
+                        showMessage = true
+                    }
+                }
+            } else {
+                message = R.string.password_error
+                showMessage = true
             }
         }) {
             Text(text = stringResource(id = R.string.register))
@@ -94,4 +120,32 @@ fun RegisterScreen(navController: NavController) {
             }
         }
     }
+    if (showMessage) {
+        Popup(
+            alignment = Alignment.TopCenter,
+            onDismissRequest = { showMessage = false }
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(Color.Red.copy(alpha = 0.8f), shape =  RoundedCornerShape(8.dp)) // Color translúcid i puntes rodones
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(id = message),
+                    color = Color.White
+                )
+            }
+            LaunchedEffect(Unit) {
+                kotlinx.coroutines.delay(2000) // Mostra el missatge durant 2 segons
+                showMessage = false
+            }
+        }
+    }
+}
+
+fun hashPassword(password: String): String {
+    val digest = MessageDigest.getInstance("SHA-256")
+    val hashBytes = digest.digest(password.toByteArray())
+    return hashBytes.joinToString("") { "%02x".format(it) }
 }
