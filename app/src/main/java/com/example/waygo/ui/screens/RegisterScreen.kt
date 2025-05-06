@@ -19,23 +19,31 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.window.Popup
 import com.example.waygo.R
 import com.example.waygo.dao.UserDao
 import com.example.waygo.entity.UserEntity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.auth.AuthState
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
 
+
+fun isValidEmail(email: String): Boolean {
+    return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+}
+
 @Composable
 fun RegisterScreen(navController: NavController, userDao: UserDao) {
-    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var passwordConfirm by remember { mutableStateOf("") }
-    var mail by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
     var showMessage by remember { mutableStateOf(false) }
-    var message by remember { mutableStateOf(0) }
+    var errorMessage by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -45,15 +53,9 @@ fun RegisterScreen(navController: NavController, userDao: UserDao) {
         Text(text = stringResource(id = R.string.register_screen))
         Spacer(modifier = Modifier.height(20.dp))
         OutlinedTextField(
-            value = mail,
-            onValueChange = { mail = it },
+            value = email,
+            onValueChange = { email = it },
             label = { Text(stringResource(id = R.string.mail)) }
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        OutlinedTextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text(stringResource(id = R.string.user)) }
         )
         Spacer(modifier = Modifier.height(20.dp))
         OutlinedTextField(
@@ -65,32 +67,29 @@ fun RegisterScreen(navController: NavController, userDao: UserDao) {
         )
         Spacer(modifier = Modifier.height(20.dp))
         OutlinedTextField(
-            value = passwordConfirm,
-            onValueChange = { passwordConfirm = it },
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
             label = { Text(stringResource(id = R.string.password)) },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
         Spacer(modifier = Modifier.height(20.dp))
-        val coroutineScope = rememberCoroutineScope()
         Button(onClick = {
-            if (password == passwordConfirm && username.isNotEmpty() && mail.isNotEmpty()) {
-                val hashedPassword = hashPassword(password)
-                val newUser = UserEntity(email = mail, username = username, hashedPassword = hashedPassword)
-
-                coroutineScope.launch {
-                    try {
-                        userDao.registerUser(newUser)
-                        navController.navigate("login") {
-                            popUpTo("register") { inclusive = true }
+            val auth = FirebaseAuth.getInstance()
+            if (email.isNotEmpty() && password.isNotEmpty() && password == confirmPassword) {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            navController.navigate("login") {
+                                popUpTo("register") { inclusive = true }
+                            }
+                        } else {
+                            errorMessage = task.exception?.message ?: "Registration failed"
+                            showMessage = true
                         }
-                    } catch (e: Exception) {
-                        message = R.string.register_error
-                        showMessage = true
                     }
-                }
             } else {
-                message = R.string.password_error
+                errorMessage = context.getString(R.string.password_error)
                 showMessage = true
             }
         }) {
@@ -127,25 +126,19 @@ fun RegisterScreen(navController: NavController, userDao: UserDao) {
         ) {
             Box(
                 modifier = Modifier
-                    .background(Color.Red.copy(alpha = 0.8f), shape =  RoundedCornerShape(8.dp)) // Color translúcid i puntes rodones
+                    .background(Color.Red.copy(alpha = 0.8f), shape = RoundedCornerShape(8.dp))
                     .padding(16.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(id = message),
+                    text = errorMessage,
                     color = Color.White
                 )
             }
             LaunchedEffect(Unit) {
-                kotlinx.coroutines.delay(2000) // Mostra el missatge durant 2 segons
+                kotlinx.coroutines.delay(2000)
                 showMessage = false
             }
         }
     }
-}
-
-fun hashPassword(password: String): String {
-    val digest = MessageDigest.getInstance("SHA-256")
-    val hashBytes = digest.digest(password.toByteArray())
-    return hashBytes.joinToString("") { "%02x".format(it) }
 }

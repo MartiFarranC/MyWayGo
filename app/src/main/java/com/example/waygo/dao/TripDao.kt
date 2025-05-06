@@ -30,4 +30,7 @@ interface TripDao {
 //        Log.d("TripDao", "Deleting trip: $trip")
 //    }
 
+    @Query("SELECT * FROM TripEntity WHERE userId = :userId ORDER BY startDate ASC")
+    suspend fun getTripsByUserId(userId: String): List<TripEntity>
+
 }

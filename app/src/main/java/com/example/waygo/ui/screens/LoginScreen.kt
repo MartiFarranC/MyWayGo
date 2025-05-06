@@ -16,7 +16,6 @@ import androidx.compose.runtime.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
@@ -24,19 +23,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Popup
 import com.example.waygo.R
 import com.example.waygo.dao.UserDao
-import kotlinx.coroutines.launch
+import com.google.firebase.auth.FirebaseAuth
+//import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.auth.AuthState
+
 
 @Composable
-fun LoginScreen(navController: NavController,  userDao: UserDao) {
-    var username by remember { mutableStateOf("") }
+fun LoginScreen(navController: NavController, userDao: UserDao) {
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showMessage by remember { mutableStateOf(false) }
-
-    // Llista d'usuaris de prova
-//    val testUsers = mapOf(
-//        "user1" to "password1",
-//        "user2" to "password2"
-//    )
+    var errorMessage by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -46,9 +43,9 @@ fun LoginScreen(navController: NavController,  userDao: UserDao) {
         Text(text = stringResource(id = R.string.login_screen))
         Spacer(modifier = Modifier.height(20.dp))
         OutlinedTextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text(stringResource(id = R.string.user)) }
+            value = email,
+            onValueChange = { email = it },
+            label = { Text(stringResource(id = R.string.mail)) }
         )
         Spacer(modifier = Modifier.height(20.dp))
         OutlinedTextField(
@@ -59,17 +56,24 @@ fun LoginScreen(navController: NavController,  userDao: UserDao) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
         Spacer(modifier = Modifier.height(20.dp))
-        val coroutineScope = rememberCoroutineScope()
         Button(onClick = {
-            coroutineScope.launch {
-                val user = userDao.getUserByEmail(username)
-                if (user != null && user.hashedPassword == hashPassword(password)) {
-                    navController.navigate("home") {
-                        popUpTo("login") { inclusive = true }
+            val auth = FirebaseAuth.getInstance()
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                email = email.trim()
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            navController.navigate("home") {
+                                popUpTo("login") { inclusive = true }
+                            }
+                        } else {
+                            errorMessage = task.exception?.message ?: "Login failed"
+                            showMessage = true
+                        }
                     }
-                } else {
-                    showMessage = true
-                }
+            } else {
+                errorMessage = context.getString(R.string.incorrect_credentials)
+                showMessage = true
             }
         }) {
             Text(text = stringResource(id = R.string.login))
@@ -100,20 +104,19 @@ fun LoginScreen(navController: NavController,  userDao: UserDao) {
         ) {
             Box(
                 modifier = Modifier
-                    .background(Color.Red.copy(alpha = 0.8f), shape =  RoundedCornerShape(8.dp)) // Color translúcid i puntes rodones
+                    .background(Color.Red.copy(alpha = 0.8f), shape = RoundedCornerShape(8.dp))
                     .padding(16.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(id = R.string.incorrect_credentials),
+                    text = errorMessage,
                     color = Color.White
                 )
             }
             LaunchedEffect(Unit) {
-                kotlinx.coroutines.delay(2000) // Mostra el missatge durant 2 segons
+                kotlinx.coroutines.delay(2000)
                 showMessage = false
             }
         }
-
     }
 }

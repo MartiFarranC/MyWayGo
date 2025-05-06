@@ -15,7 +15,7 @@ import com.example.waygo.model.Trip
 
 @Database(
     entities = [TripEntity::class, ItineraryItemEntity::class, UserEntity::class],
-    version = 2, // Incremented version
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

@@ -46,14 +46,24 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.waygo.model.Trip
 import com.example.waygo.viewmodel.TripViewModel
 import androidx.compose.ui.window.Popup
+import com.google.firebase.auth.FirebaseAuth
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun Content1(navController: NavController, paddingValues: PaddingValues, tripViewModel: TripViewModel) {
+
+    val auth = FirebaseAuth.getInstance()
+    val userId = auth.currentUser?.uid ?: return // Get the logged-in user's ID
     val trips by tripViewModel.trips.collectAsState() // Observe trips from ViewModel
     var showDialog by remember { mutableStateOf(false) }
     var editDialog by remember { mutableStateOf(false) }
     var selectedTrip by remember { mutableStateOf<Trip?>(null) }
+
+    LaunchedEffect(userId) {
+        tripViewModel.loadTripsByUserId(userId)
+    }
+
+val userTrips by remember { derivedStateOf { trips.filter { it.userId == userId } } }
 
     Box(modifier = Modifier.padding(paddingValues)) {
         Column(
@@ -97,7 +107,7 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                trips.forEach { trip ->
+                userTrips.forEach { trip ->
                     Box(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.primaryContainer)
@@ -206,6 +216,7 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
     var newParticipants by remember { mutableStateOf("") }
     var participants by remember { mutableStateOf(listOf<String>()) }
     var showMessage by remember { mutableStateOf(false) }
+    var userId by remember { mutableStateOf("") }
 
     val calendar = Calendar.getInstance()
     val today = calendar.timeInMillis // Obtenim la data actual en mil·lisegons
@@ -389,7 +400,18 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                         endCalendar.set(endParts[2].toInt(), endParts[1].toInt() - 1, endParts[0].toInt())
 
                         if (startCalendar.timeInMillis <= endCalendar.timeInMillis) {
-                            onSave(Trip(id, tripName, destinations.joinToString(", "), participants.joinToString(", "), startDate, endDate))                        }
+                            onSave(
+                                Trip(
+                                    id = id,
+                                    name = tripName,
+                                    destinations = destinations.joinToString(", "),
+                                    participants = participants.joinToString(", "),
+                                    startDate = startDate,
+                                    endDate = endDate,
+                                    userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                                )
+                            )
+                        }
                     }
                 }
             }) {
@@ -424,6 +446,7 @@ fun TravelEditDialog(
     var showParticipantsDialog by remember { mutableStateOf(false) }
     var newDestination by remember { mutableStateOf("") }
     var newParticipants by remember { mutableStateOf("") }
+    var userId by remember { mutableStateOf("") }
 
     val calendar = Calendar.getInstance()
     val today = calendar.timeInMillis
@@ -539,7 +562,7 @@ fun TravelEditDialog(
                         endCalendar.set(endParts[2].toInt(), endParts[1].toInt() - 1, endParts[0].toInt())
 
                         if (startCalendar.timeInMillis <= endCalendar.timeInMillis) {
-                            onSave(Trip(id, tripName, destinations.joinToString(", "), participants.joinToString(", "), startDate, endDate))                        }
+                            onSave(Trip(id, tripName, destinations.joinToString(", "), participants.joinToString(", "), startDate, endDate, userId))                        }
                     }
                 }
             })  {

@@ -6,7 +6,8 @@ data class Trip(
     val destinations: String,
     val participants: String,
     val startDate: String,
-    val endDate: String
+    val endDate: String,
+    val userId: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -17,7 +18,8 @@ data class Trip(
                 destinations == other.destinations &&
                 participants == other.participants &&
                 startDate == other.startDate &&
-                endDate == other.endDate
+                endDate == other.endDate &&
+                userId == other.userId
     }
 
     override fun hashCode(): Int {
@@ -26,6 +28,7 @@ data class Trip(
                 destinations.hashCode() +
                 participants.hashCode() +
                 startDate.hashCode() +
-                endDate.hashCode()
+                endDate.hashCode() +
+                userId.hashCode()
     }
 }

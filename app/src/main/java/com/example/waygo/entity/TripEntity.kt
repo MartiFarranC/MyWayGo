@@ -11,7 +11,8 @@ data class TripEntity(
     val name: String,
     val destinations: String,
     val participants: String,
-    val startDate: String,
-    val endDate: String
+    val startDate: String, //TODO: Ha de ser Data
+    val endDate: String,//TODO: Ha de ser Data
+    val userId: String
 )
 

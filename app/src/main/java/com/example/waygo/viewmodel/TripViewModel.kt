@@ -46,6 +46,13 @@ class TripViewModel(private val tripDao: TripDao) : ViewModel() {
         }
     }
 
+    fun loadTripsByUserId(userId: String) {
+        viewModelScope.launch {
+            val tripEntities = tripDao.getTripsByUserId(userId)
+            _trips.value = tripEntities.map { it.toTrip() }
+        }
+    }
+
     private fun TripEntity.toTrip(): Trip {
         return Trip(
             id = this.id,
@@ -53,7 +60,8 @@ class TripViewModel(private val tripDao: TripDao) : ViewModel() {
             destinations = this.destinations,
             participants = this.participants,
             startDate = this.startDate,
-            endDate = this.endDate
+            endDate = this.endDate,
+            userId = this.userId
         )
     }
 
@@ -64,7 +72,8 @@ class TripViewModel(private val tripDao: TripDao) : ViewModel() {
             destinations = this.destinations,
             participants = this.participants,
             startDate = this.startDate,
-            endDate = this.endDate
+            endDate = this.endDate,
+            userId = this.userId
         )
     }
 }
