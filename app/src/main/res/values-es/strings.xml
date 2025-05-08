@@ -79,5 +79,6 @@
     <string name="incorrect_credentials">Credenciales Incorrectas</string>
     <string name="register_error">Este Usuario ya Existe</string>
     <string name="password_error">Las Contraseñas NO Coinciden</string>
+    <string name="logout">Cerrar la cuenta</string>
 
 </resources>

@@ -79,5 +79,6 @@
     <string name="incorrect_credentials">Incorrect Credentials</string>
     <string name="register_error">This User is Already picked</string>
     <string name="password_error">The Passwords are NOT The Same</string>
+    <string name="logout">Log Out </string>
 
 </resources>

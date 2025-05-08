@@ -79,6 +79,7 @@
     <string name="incorrect_credentials">Credencials Incorrectes</string>
     <string name="register_error">Aquest Usuari ja Existeix</string>
     <string name="password_error">Les Contrassenyes NO Coinsideixen</string>
+    <string name="logout">Tancar el compte</string>
 
 
 </resources>

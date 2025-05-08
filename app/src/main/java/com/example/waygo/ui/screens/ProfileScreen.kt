@@ -25,6 +25,17 @@ fun ProfileScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        Button(
+            onClick = {
+                navController.navigate("login") {
+                    popUpTo("login") { inclusive = true }
+                }
+            },
+            modifier = Modifier.align(Alignment.End)        ) {
+            Text(text = stringResource(id = R.string.logout))
+        }
+
         Text(text = stringResource(id = R.string.profile_screen))
 
         Spacer(modifier = Modifier.height(20.dp))
