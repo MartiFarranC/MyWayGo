@@ -11,6 +11,9 @@ interface UserDao {
     @Insert
     suspend fun registerUser(user: UserEntity)
 
-    @Query("SELECT * FROM UserEntity WHERE email = :email")
-    suspend fun getUserByEmail(email: String): UserEntity?
+    @Query("SELECT * FROM UserEntity WHERE id = :userId")
+    suspend fun getUserById(userId: String): UserEntity
+
+    @Insert
+    fun insertUser(user: UserEntity)
 }

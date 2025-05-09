@@ -79,6 +79,12 @@
     <string name="incorrect_credentials">Incorrect Credentials</string>
     <string name="register_error">This User is Already picked</string>
     <string name="password_error">The Passwords are NOT The Same</string>
-    <string name="logout">Log Out </string>
-
+    <string name="logout">Log Out</string>
+    <string name="guest">Continue as a Guest</string>
+    <string name="username">Username</string>
+    <string name="birthdate">Birthdate</string>
+    <string name="address">Address</string>
+    <string name="phone">Phone</string>receiveEmail
+    <string name="receiveEmail">Do you want to receive emails?</string>
+    <string name="country">Country</string>
 </resources>

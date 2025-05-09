@@ -11,13 +11,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.waygo.R
+import com.example.waygo.entity.UserEntity
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, user: UserEntity) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+    if (user == null) {
+        Text("Error profile")
+        return
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -25,7 +30,7 @@ fun ProfileScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
+        Text(text = "Welcome, ${user.username}")
         Button(
             onClick = {
                 navController.navigate("login") {
@@ -41,8 +46,8 @@ fun ProfileScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(
-            value = name,
-            onValueChange = { name = it },
+            value = user.username,
+            onValueChange = { user.username = it },
             label = { Text(text = stringResource(id = R.string.user)) },
             modifier = Modifier.fillMaxWidth()
         )
@@ -50,32 +55,22 @@ fun ProfileScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
+            value = user.email,
+            onValueChange = { user.email = it },
             label = { Text(text = stringResource(id = R.string.mail)) },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text(text = stringResource(id = R.string.password)) },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Button(
-            onClick = {
-                // Save user settings logic here
-                println("User settings saved: Name=$name, Email=$email")
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = stringResource(id = R.string.save_settings))
-        }
+        Text(text = "Username: ${user.username}")
+        Text(text = "Birthdate: ${user.birthdate}")
+        Text(text = "Address: ${user.address}")
+        Text(text = "Country: ${user.country}")
+        Text(text = "Phone: ${user.phone}")
+        Text(text = "Receive Emails: ${if (user.receiveEmail) "Yes" else "No"}")
+
+        Spacer(modifier = Modifier.height(20.dp))
 
         Spacer(modifier = Modifier.height(20.dp))
 

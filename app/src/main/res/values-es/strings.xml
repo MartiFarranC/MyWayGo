@@ -80,5 +80,11 @@
     <string name="register_error">Este Usuario ya Existe</string>
     <string name="password_error">Las Contraseñas NO Coinciden</string>
     <string name="logout">Cerrar la cuenta</string>
-
+    <string name="guest">Continuar como invitado</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="birthdate">Fecha de nacimiento</string>
+    <string name="address">Dirección</string>
+    <string name="phone">Teléfono</string>
+    <string name="receiveEmail">¿Quieres recibir correos electrónicos?</string>
+    <string name="country">País</string>
 </resources>

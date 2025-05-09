@@ -80,6 +80,11 @@
     <string name="register_error">Aquest Usuari ja Existeix</string>
     <string name="password_error">Les Contrassenyes NO Coinsideixen</string>
     <string name="logout">Tancar el compte</string>
-
-
+    <string name="guest">Continuar com a convidat</string>
+    <string name="username">Nom d usuari</string>
+    <string name="birthdate">Data de naixement</string>
+    <string name="address">Adreça</string>
+    <string name="phone">Telèfon</string>
+    <string name="receiveEmail">Vols rebre correus electrònics?</string>
+    <string name="country">País</string>
 </resources>

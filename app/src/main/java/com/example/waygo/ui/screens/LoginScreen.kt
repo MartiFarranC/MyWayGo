@@ -35,6 +35,20 @@ fun LoginScreen(navController: NavController, userDao: UserDao) {
     var errorMessage by remember { mutableStateOf("") }
     val context = LocalContext.current
 
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Button(
+            onClick = {
+                navController.navigate("home") {
+                    popUpTo("home") { inclusive = true }
+                }
+            },
+            modifier = Modifier.align(Alignment.TopEnd)        ) {
+            Text(text = stringResource(id = R.string.guest))
+        }
+        }
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

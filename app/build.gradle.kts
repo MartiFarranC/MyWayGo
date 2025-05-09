@@ -94,4 +94,10 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
 
     implementation ("com.google.firebase:firebase-auth")
+
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-auth")
 }
