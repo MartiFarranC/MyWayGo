@@ -26,6 +26,7 @@ import androidx.compose.ui.window.Popup
 import com.example.waygo.R
 import com.example.waygo.dao.UserDao
 import com.example.waygo.entity.UserEntity
+import com.example.waygo.viewmodel.RegisterViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.auth.AuthState
 import kotlinx.coroutines.CoroutineScope
@@ -39,19 +40,16 @@ fun isValidEmail(email: String): Boolean {
 }
 
 @Composable
-fun RegisterScreen(navController: NavController, userDao: UserDao) {
-    var email by remember { mutableStateOf("") }
-    var username by remember { mutableStateOf("") }
-    var birthdate by remember { mutableStateOf("") }
-    var address by remember { mutableStateOf("") }
-    var country by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
+fun RegisterScreen(navController: NavController, userDao: UserDao, viewModel: RegisterViewModel) {
+    val email = viewModel.email.value
+    val username = viewModel.username.value
+
     var receiveEmail by remember { mutableStateOf(false) }
-    var password by remember { mutableStateOf("") }
+    var password = viewModel.password.value
     var confirmPassword by remember { mutableStateOf("") }
     var showMessage by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
-    var hashedPassword by remember { mutableStateOf("") }
+//    var hashedPassword by remember { mutableStateOf("") }
 
     val context = LocalContext.current
 
@@ -65,60 +63,23 @@ fun RegisterScreen(navController: NavController, userDao: UserDao) {
 
         OutlinedTextField(
             value = username,
-            onValueChange = { username = it },
+            onValueChange = { viewModel.username.value = it },
             label = { Text(stringResource(id = R.string.username)) },
-            modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = birthdate,
-            onValueChange = { birthdate = it },
-            label = { Text(stringResource(id = R.string.birthdate)) },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = address,
-            onValueChange = { address = it },
-            label = { Text(stringResource(id = R.string.address)) },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = country,
-            onValueChange = { country = it },
-            label = { Text(stringResource(id = R.string.country)) },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = phone,
-            onValueChange = { phone = it },
-            label = { Text(stringResource(id = R.string.phone)) },
-            modifier = Modifier.fillMaxWidth()
-        )
         OutlinedTextField(
             value = email,
-            onValueChange = { email = it },
+            onValueChange = { viewModel.email.value = it },
             label = { Text(stringResource(id = R.string.mail)) }
         )
         Spacer(modifier = Modifier.height(20.dp))
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { viewModel.password.value = it },
             label = { Text(stringResource(id = R.string.password)) },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
-        Spacer(modifier = Modifier.height(20.dp))
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
@@ -126,43 +87,22 @@ fun RegisterScreen(navController: NavController, userDao: UserDao) {
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
-        Spacer(modifier = Modifier.height(20.dp))
+
         Button(onClick = {
-            val auth = FirebaseAuth.getInstance()
-            if (email.isNotEmpty() && password.isNotEmpty() && password == confirmPassword) {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val userId = task.result?.user?.uid ?: ""
-                            val userEntity = UserEntity(
-                                id = userId,
-                                email = email,
-                                username = username,
-                                birthdate = birthdate,
-                                address = address,
-                                country = country,
-                                phone = phone,
-                                receiveEmail = receiveEmail
-//                                hashedPassword = hashPassword(password)
-                            )
-                            // Save userEntity to Room database
-                            CoroutineScope(Dispatchers.IO).launch {
-                                userDao.insertUser(userEntity)
-                            }
-                            navController.navigate("login") {
-                                popUpTo("register") { inclusive = true }
-                            }
-                        } else {
-                            errorMessage = task.exception?.message ?: "Registration failed"
-                            showMessage = true
-                        }
-                    }
-            } else {
-                errorMessage = context.getString(R.string.password_error)
+            if (email.isEmpty() || username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                errorMessage = context.getString(R.string.empty_fields)
                 showMessage = true
+            } else if (!isValidEmail(email)) {
+                errorMessage = context.getString(R.string.invalid_email)
+                showMessage = true
+            } else if (password != confirmPassword) {
+                errorMessage = context.getString(R.string.passwords_do_not_match)
+                showMessage = true
+            }else{
+                navController.navigate("second_register")
             }
         }) {
-            Text(text = stringResource(id = R.string.register))
+            Text(text = stringResource(id = R.string.next))
         }
     }
     Box(

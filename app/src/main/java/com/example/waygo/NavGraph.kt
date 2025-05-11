@@ -23,6 +23,8 @@ import com.example.waygo.ui.screens.CostsScreen
 import com.example.waygo.ui.screens.SettingsScreen
 import com.example.waygo.ui.screens.ToDoListScreen
 import com.example.waygo.ui.screens.HelpScreen
+import com.example.waygo.ui.screens.SecondRegisterScreen
+import com.example.waygo.viewmodel.RegisterViewModel
 import com.example.waygo.viewmodel.TripViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +34,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun NavGraph(navController: NavHostController, tripViewModel: TripViewModel) {
     val userDao = AppDatabase.getInstance(navController.context).userDao()
+    val registerViewModel = remember { RegisterViewModel() }
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login") { LoginScreen(navController, userDao) }
@@ -67,12 +70,13 @@ fun NavGraph(navController: NavHostController, tripViewModel: TripViewModel) {
             } ?: Text("Unable to load profile. Please try again.") //TODO: Traducció
         }
 
-        composable("register") { RegisterScreen(navController, userDao) }
+        composable("register") { RegisterScreen(navController, userDao, registerViewModel) }
         composable("terms") { TermConditionsScreen(navController) }
         composable("about") { AboutScreen(navController) }
         composable("cost") { CostsScreen(navController) }
         composable("todo") { ToDoListScreen(navController) }
         composable("settings") { SettingsScreen(navController) }
         composable("help") { HelpScreen(navController) }
+        composable("second_register") { SecondRegisterScreen(navController, userDao, registerViewModel) }
     }
 }

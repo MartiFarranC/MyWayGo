@@ -87,4 +87,9 @@
     <string name="phone">Teléfono</string>
     <string name="receiveEmail">¿Quieres recibir correos electrónicos?</string>
     <string name="country">País</string>
+    <string name="next">Siguiente</string>
+    <string name="empty_fields">empty_fields</string>
+    <string name="invalid_email">invalid_email</string>
+    <string name="passwords_do_not_match">passwords_do_not_match</string>
+
 </resources>
