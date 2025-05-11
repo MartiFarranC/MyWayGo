@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -72,6 +73,18 @@ fun RegisterScreen(navController: NavController, userDao: UserDao, viewModel: Re
             onValueChange = { viewModel.email.value = it },
             label = { Text(stringResource(id = R.string.mail)) }
         )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(vertical = 8.dp)
+        ) {
+            Checkbox(
+                checked = viewModel.receiveEmail.value,
+                onCheckedChange = { viewModel.receiveEmail.value = it }
+            )
+            Text(text = stringResource(id = R.string.receive_email) + " ${if (viewModel.receiveEmail.value) "Yes" else "No"}" )//TODO Traduct
+        }
+
         Spacer(modifier = Modifier.height(20.dp))
         OutlinedTextField(
             value = password,
@@ -135,6 +148,7 @@ fun RegisterScreen(navController: NavController, userDao: UserDao, viewModel: Re
         ) {
             Box(
                 modifier = Modifier
+                    .padding(top = 100.dp)
                     .background(Color.Red.copy(alpha = 0.8f), shape = RoundedCornerShape(8.dp))
                     .padding(16.dp),
                 contentAlignment = Alignment.Center

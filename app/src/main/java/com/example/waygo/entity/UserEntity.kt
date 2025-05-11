@@ -9,7 +9,7 @@ data class UserEntity(
     @PrimaryKey val id: String,
     var email: String,
     var username: String, //TODO UNIC
-    var birthdate: String, //TODO Date
+    var birthdate: Date,
     var address : String,
     var phone : String,
     var country : String,

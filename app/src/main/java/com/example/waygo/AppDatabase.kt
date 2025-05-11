@@ -12,16 +12,20 @@ import com.example.waygo.dao.ItineraryItemDao
 import com.example.waygo.dao.UserDao
 import com.example.waygo.entity.UserEntity
 import com.example.waygo.model.Trip
+import com.example.waygo.util.DateConverter
+
 
 @Database(
     entities = [TripEntity::class, ItineraryItemEntity::class, UserEntity::class],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
+@TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun tripDao(): TripDao
     abstract fun itineraryItemDao(): ItineraryItemDao
     abstract fun userDao(): UserDao
+
 
     companion object {
         @Volatile

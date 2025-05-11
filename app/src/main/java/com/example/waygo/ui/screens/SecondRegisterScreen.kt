@@ -33,13 +33,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
+import java.util.Date
 
 @Composable
 fun SecondRegisterScreen(navController: NavController, userDao: UserDao, viewModel: RegisterViewModel) {
     val email = viewModel.email.value
     val username = viewModel.username.value
     val receiveEmail = viewModel.receiveEmail.value
-    var birthdate by remember { mutableStateOf("") }
+    var birthdate by remember { mutableStateOf<Date?>(null) }
     var address by remember { mutableStateOf("") }
     var country by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
@@ -48,6 +49,21 @@ fun SecondRegisterScreen(navController: NavController, userDao: UserDao, viewMod
     val password = viewModel.password.value
 
     val context = LocalContext.current
+
+    var selectedDate by remember { mutableStateOf<Date?>(null) }
+    val datePickerDialog = remember {
+        android.app.DatePickerDialog(
+            context,
+            { _, year, month, dayOfMonth ->
+                val calendar = java.util.Calendar.getInstance()
+                calendar.set(year, month, dayOfMonth)
+                selectedDate = calendar.time
+            },
+            java.util.Calendar.getInstance().get(java.util.Calendar.YEAR),
+            java.util.Calendar.getInstance().get(java.util.Calendar.MONTH),
+            java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH)
+        )
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -59,11 +75,18 @@ fun SecondRegisterScreen(navController: NavController, userDao: UserDao, viewMod
         Text("Username: $username")
         Spacer(modifier = Modifier.height(20.dp))
 
-        OutlinedTextField(
-            value = birthdate,
-            onValueChange = { birthdate = it },
-            label = { Text(stringResource(id = R.string.birthdate)) },
-        )
+        Button(
+            onClick = { datePickerDialog.show() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = selectedDate?.let { java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(it) }
+                    ?: stringResource(id = R.string.birthdate)
+            )
+            birthdate = (selectedDate ?: java.util.Date())
+        }
         OutlinedTextField(
             value = address,
             onValueChange = { address = it },
@@ -81,7 +104,7 @@ fun SecondRegisterScreen(navController: NavController, userDao: UserDao, viewMod
         )
 
         Button(onClick = {
-            if (birthdate.isEmpty() || address.isEmpty() || country.isEmpty() || phone.isEmpty()) {
+            if (birthdate.toString().isEmpty() || address.isEmpty() || country.isEmpty() || phone.isEmpty()) {
                 errorMessage = context.getString(R.string.empty_fields)
                 showMessage = true
             } else {
@@ -94,7 +117,7 @@ fun SecondRegisterScreen(navController: NavController, userDao: UserDao, viewMod
                                 id = userId,
                                 email = email,
                                 username = username,
-                                birthdate = birthdate,
+                                birthdate = birthdate ?: Date(),
                                 address = address,
                                 country = country,
                                 phone = phone,
@@ -124,6 +147,7 @@ fun SecondRegisterScreen(navController: NavController, userDao: UserDao, viewMod
         ) {
             Box(
                 modifier = Modifier
+                    .padding(top = 100.dp)
                     .background(Color.Red.copy(alpha = 0.8f), shape = RoundedCornerShape(8.dp))
                     .padding(16.dp),
                 contentAlignment = Alignment.Center

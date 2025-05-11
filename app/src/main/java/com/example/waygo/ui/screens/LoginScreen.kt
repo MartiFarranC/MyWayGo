@@ -118,6 +118,7 @@ fun LoginScreen(navController: NavController, userDao: UserDao) {
         ) {
             Box(
                 modifier = Modifier
+                    .padding(top = 100.dp)
                     .background(Color.Red.copy(alpha = 0.8f), shape = RoundedCornerShape(8.dp))
                     .padding(16.dp),
                 contentAlignment = Alignment.Center

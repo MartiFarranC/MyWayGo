@@ -66,7 +66,7 @@ fun NavGraph(navController: NavHostController, tripViewModel: TripViewModel) {
             }
 
             user?.let {
-                ProfileScreen(navController, it)
+                ProfileScreen(navController, it, registerViewModel)
             } ?: Text("Unable to load profile. Please try again.") //TODO: Traducció
         }
 
