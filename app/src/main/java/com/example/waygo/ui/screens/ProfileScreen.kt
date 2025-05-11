@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import com.example.waygo.R
 import com.example.waygo.entity.UserEntity
 import com.example.waygo.viewmodel.RegisterViewModel
+import com.google.firebase.auth.FirebaseAuth
 import java.util.Date
 
 @Composable
@@ -43,8 +44,13 @@ fun ProfileScreen(navController: NavController, user: UserEntity, viewModel: Reg
         )
     }
 
-    if (user.id == null) {
-        Text("Error profile")
+    if (user.id == null || user.email.isBlank()) {
+        // Guest detected, redirect to login
+        LaunchedEffect(Unit) {
+            navController.navigate("login") {
+                popUpTo("profile") { inclusive = true }
+            }
+        }
         return
     }
     Column(
@@ -64,10 +70,12 @@ fun ProfileScreen(navController: NavController, user: UserEntity, viewModel: Reg
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
+                    FirebaseAuth.getInstance().signOut()
                     navController.navigate("login") {
-                        popUpTo("login") { inclusive = true }
+                        popUpTo("profile") { inclusive = true }
                     }
                 }
+
             ) {
                 Text(text = stringResource(id = R.string.logout))
             }

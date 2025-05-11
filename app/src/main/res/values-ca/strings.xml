@@ -91,5 +91,11 @@
     <string name="empty_fields">empty_fields</string>
     <string name="invalid_email">invalid_email</string>
     <string name="passwords_do_not_match">passwords_do_not_match</string>
+    <string name="password_recovery_email_sent">password_recovery_email_sent</string>
+    <string name="enter_email">enter_email</string>
+    <string name="password_recovery">password_recovery</string>
+    <string name="recover_password">recover_password</string>
+    <string name="sending_recovery_email">sending_recovery_email</string>
+    <string name="forgot_password">forgot_password</string>
 
 </resources>

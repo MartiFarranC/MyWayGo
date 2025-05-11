@@ -48,12 +48,11 @@ import com.example.waygo.viewmodel.TripViewModel
 import androidx.compose.ui.window.Popup
 import com.google.firebase.auth.FirebaseAuth
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun Content1(navController: NavController, paddingValues: PaddingValues, tripViewModel: TripViewModel) {
 
     val auth = FirebaseAuth.getInstance()
-    val userId = auth.currentUser?.uid ?: return // Get the logged-in user's ID
+    val userId = auth.currentUser?.uid ?: "guest"
     val trips by tripViewModel.trips.collectAsState() // Observe trips from ViewModel
     var showDialog by remember { mutableStateOf(false) }
     var editDialog by remember { mutableStateOf(false) }

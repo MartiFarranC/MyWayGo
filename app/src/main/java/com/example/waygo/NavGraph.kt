@@ -23,6 +23,7 @@ import com.example.waygo.ui.screens.CostsScreen
 import com.example.waygo.ui.screens.SettingsScreen
 import com.example.waygo.ui.screens.ToDoListScreen
 import com.example.waygo.ui.screens.HelpScreen
+import com.example.waygo.ui.screens.PasswordRecoveryScreen
 import com.example.waygo.ui.screens.SecondRegisterScreen
 import com.example.waygo.viewmodel.RegisterViewModel
 import com.example.waygo.viewmodel.TripViewModel
@@ -78,5 +79,6 @@ fun NavGraph(navController: NavHostController, tripViewModel: TripViewModel) {
         composable("settings") { SettingsScreen(navController) }
         composable("help") { HelpScreen(navController) }
         composable("second_register") { SecondRegisterScreen(navController, userDao, registerViewModel) }
+        composable("password_recovery") { PasswordRecoveryScreen(navController = navController) }
     }
 }

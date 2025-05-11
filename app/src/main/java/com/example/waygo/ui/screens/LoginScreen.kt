@@ -17,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -92,6 +93,15 @@ fun LoginScreen(navController: NavController, userDao: UserDao) {
         }) {
             Text(text = stringResource(id = R.string.login))
         }
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = stringResource(id = R.string.forgot_password),
+            modifier = Modifier
+                .clickable {
+                    navController.navigate("password_recovery") // Navigate to password recovery screen
+                }
+                .padding(16.dp),
+        )
     }
     Box(
         modifier = Modifier

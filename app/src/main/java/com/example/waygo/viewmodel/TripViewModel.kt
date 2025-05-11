@@ -14,6 +14,9 @@ class TripViewModel(private val tripDao: TripDao) : ViewModel() {
     private val _trips = MutableStateFlow<List<Trip>>(emptyList())
     val trips: StateFlow<List<Trip>> = _trips.asStateFlow()
 
+    private var isGuest: Boolean = false
+    private var guestTrips: MutableList<Trip> = mutableListOf()
+
     init {
         loadTrips()
     }
@@ -27,29 +30,52 @@ class TripViewModel(private val tripDao: TripDao) : ViewModel() {
 
     fun addTrip(trip: Trip) {
         viewModelScope.launch {
-            tripDao.addTrip(trip.toEntity())
-            loadTrips()
+            if (isGuest) {
+                guestTrips.add(trip)
+                _trips.value = guestTrips.toList()
+            } else {
+                tripDao.addTrip(trip.toEntity())
+                loadTripsByUserId(trip.userId)
+            }
         }
     }
 
     fun editTrip(updatedTrip: Trip) {
         viewModelScope.launch {
-            tripDao.updateTrip(updatedTrip.toEntity())
-            loadTrips()
+            if (isGuest) {
+                guestTrips = guestTrips.map {
+                    if (it.id == updatedTrip.id) updatedTrip else it
+                }.toMutableList()
+                _trips.value = guestTrips.toList()
+            } else {
+                tripDao.updateTrip(updatedTrip.toEntity())
+                loadTripsByUserId(updatedTrip.userId)
+            }
         }
     }
 
     fun deleteTrip(trip: Trip) {
         viewModelScope.launch {
-            tripDao.deleteTrip(trip.toEntity())
-            loadTrips()
+            if (isGuest) {
+                guestTrips.removeAll { it.id == trip.id }
+                _trips.value = guestTrips.toList()
+            } else {
+                tripDao.deleteTrip(trip.toEntity())
+                loadTripsByUserId(trip.userId)
+            }
         }
     }
 
     fun loadTripsByUserId(userId: String) {
         viewModelScope.launch {
-            val tripEntities = tripDao.getTripsByUserId(userId)
-            _trips.value = tripEntities.map { it.toTrip() }
+            if (userId == "guest") {
+                isGuest = true
+                _trips.value = guestTrips
+            } else {
+                isGuest = false
+                val tripEntities = tripDao.getTripsByUserId(userId)
+                _trips.value = tripEntities.map { it.toTrip() }
+            }
         }
     }
 
