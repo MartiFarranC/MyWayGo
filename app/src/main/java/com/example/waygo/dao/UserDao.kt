@@ -16,4 +16,7 @@ interface UserDao {
 
     @Insert
     fun insertUser(user: UserEntity)
+
+    @Query("SELECT COUNT(*) FROM userentity WHERE username = :username")
+    suspend fun isUsernameTaken(username: String): Int
 }

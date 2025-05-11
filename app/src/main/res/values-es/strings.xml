@@ -102,5 +102,6 @@
     <string name="registration_failed">registration_failed</string>
     <string name="email_not_verified">email_not_verified</string>
     <string name="continue_button">continue_button</string>
+    <string name="username_taken">username_taken</string>
 
 </resources>

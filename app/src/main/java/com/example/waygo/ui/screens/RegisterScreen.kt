@@ -33,6 +33,7 @@ import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.auth.Aut
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.security.MessageDigest
 
 
@@ -116,28 +117,22 @@ fun RegisterScreen(navController: NavController, userDao: UserDao, viewModel: Re
                 errorMessage = context.getString(R.string.passwords_do_not_match)
                 showMessage = true
             } else {
-                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val user = FirebaseAuth.getInstance().currentUser
-                            user?.sendEmailVerification()?.addOnCompleteListener { verifyTask ->
-                                if (verifyTask.isSuccessful) {
-                                    showVerificationPrompt = true
-                                    showContinueButton = true
-                                } else {
-                                    errorMessage = context.getString(R.string.verification_email_failed)
-                                    showMessage = true
-                                }
-                            }
-                        } else {
-                            errorMessage = task.exception?.message ?: context.getString(R.string.registration_failed)
-                            showMessage = true
+                CoroutineScope(Dispatchers.IO).launch {
+                    val isTaken = userDao.isUsernameTaken(username) > 0
+                    if (isTaken) {
+                        errorMessage = context.getString(R.string.username_taken)
+                        showMessage = true
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            navController.navigate("second_register")
                         }
                     }
+                }
             }
         }) {
             Text(text = stringResource(id = R.string.next))
         }
+
     }
     Box(
         modifier = Modifier
