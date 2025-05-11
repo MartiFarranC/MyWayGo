@@ -50,6 +50,10 @@ fun RegisterScreen(navController: NavController, userDao: UserDao, viewModel: Re
     var confirmPassword by remember { mutableStateOf("") }
     var showMessage by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
+
+
+    var showVerificationPrompt by remember { mutableStateOf(false) }
+    var showContinueButton by remember { mutableStateOf(false) }
 //    var hashedPassword by remember { mutableStateOf("") }
 
     val context = LocalContext.current
@@ -111,8 +115,25 @@ fun RegisterScreen(navController: NavController, userDao: UserDao, viewModel: Re
             } else if (password != confirmPassword) {
                 errorMessage = context.getString(R.string.passwords_do_not_match)
                 showMessage = true
-            }else{
-                navController.navigate("second_register")
+            } else {
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val user = FirebaseAuth.getInstance().currentUser
+                            user?.sendEmailVerification()?.addOnCompleteListener { verifyTask ->
+                                if (verifyTask.isSuccessful) {
+                                    showVerificationPrompt = true
+                                    showContinueButton = true
+                                } else {
+                                    errorMessage = context.getString(R.string.verification_email_failed)
+                                    showMessage = true
+                                }
+                            }
+                        } else {
+                            errorMessage = task.exception?.message ?: context.getString(R.string.registration_failed)
+                            showMessage = true
+                        }
+                    }
             }
         }) {
             Text(text = stringResource(id = R.string.next))
@@ -164,4 +185,29 @@ fun RegisterScreen(navController: NavController, userDao: UserDao, viewModel: Re
             }
         }
     }
+
+    if (showVerificationPrompt) {
+        Text(
+            text = stringResource(id = R.string.verification_email_sent),
+            color = Color.Blue,
+            modifier = Modifier.padding(top = 16.dp)
+        )
+    }
+
+    if (showContinueButton) {
+        Button(onClick = {
+            val user = FirebaseAuth.getInstance().currentUser
+            user?.reload()?.addOnCompleteListener {
+                if (user.isEmailVerified) {
+                    navController.navigate("second_register")
+                } else {
+                    errorMessage = context.getString(R.string.email_not_verified)
+                    showMessage = true
+                }
+            }
+        }) {
+            Text(text = stringResource(id = R.string.continue_button))
+        }
+    }
 }
+

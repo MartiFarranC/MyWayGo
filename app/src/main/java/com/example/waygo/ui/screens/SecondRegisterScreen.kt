@@ -108,36 +108,33 @@ fun SecondRegisterScreen(navController: NavController, userDao: UserDao, viewMod
                 errorMessage = context.getString(R.string.empty_fields)
                 showMessage = true
             } else {
-                val auth = FirebaseAuth.getInstance()
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val userId = task.result?.user?.uid ?: ""
-                            val userEntity = UserEntity(
-                                id = userId,
-                                email = email,
-                                username = username,
-                                birthdate = birthdate ?: Date(),
-                                address = address,
-                                country = country,
-                                phone = phone,
-                                receiveEmail = receiveEmail
-                            )
-                            CoroutineScope(Dispatchers.IO).launch {
-                                userDao.insertUser(userEntity)
-                            }
-                            navController.navigate("login") {
-                                popUpTo("register") { inclusive = true }
-                            }
-                        } else {
-                            errorMessage = task.exception?.message ?: "Registration failed"
-                            showMessage = true
-                        }
+                val currentUser = FirebaseAuth.getInstance().currentUser
+                if (currentUser != null) {
+                    val userEntity = UserEntity(
+                        id = currentUser.uid,
+                        email = email,
+                        username = username,
+                        birthdate = birthdate ?: Date(),
+                        address = address,
+                        country = country,
+                        phone = phone,
+                        receiveEmail = receiveEmail
+                    )
+                    CoroutineScope(Dispatchers.IO).launch {
+                        userDao.insertUser(userEntity)
                     }
+                    navController.navigate("login") {
+                        popUpTo("register") { inclusive = true }
+                    }
+                } else {
+                    errorMessage = "User not logged in or session expired."
+                    showMessage = true
+                }
             }
         }) {
             Text(text = stringResource(id = R.string.register))
         }
+
     }
 
     if (showMessage) {
