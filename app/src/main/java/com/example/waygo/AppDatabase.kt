@@ -5,13 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.waygo.entity.ItineraryItemEntity
-import com.example.waygo.entity.TripEntity
-import com.example.waygo.dao.TripDao
-import com.example.waygo.dao.ItineraryItemDao
-import com.example.waygo.dao.UserDao
-import com.example.waygo.entity.UserEntity
-import com.example.waygo.model.Trip
+import com.example.waygo.data.local.entity.ItineraryItemEntity
+import com.example.waygo.data.local.entity.TripEntity
+import com.example.waygo.data.local.dao.TripDao
+import com.example.waygo.data.local.dao.ItineraryItemDao
+import com.example.waygo.data.local.dao.UserDao
+import com.example.waygo.data.local.entity.UserEntity
 import com.example.waygo.util.DateConverter
 
 

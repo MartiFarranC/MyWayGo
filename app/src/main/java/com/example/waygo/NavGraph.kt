@@ -11,7 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.waygo.database.AppDatabase
-import com.example.waygo.entity.UserEntity
+import com.example.waygo.data.local.entity.UserEntity
 import com.example.waygo.ui.screens.Content1
 import com.example.waygo.ui.screens.HomeScreenMenu
 import com.example.waygo.ui.screens.LoginScreen
@@ -25,8 +25,8 @@ import com.example.waygo.ui.screens.ToDoListScreen
 import com.example.waygo.ui.screens.HelpScreen
 import com.example.waygo.ui.screens.PasswordRecoveryScreen
 import com.example.waygo.ui.screens.SecondRegisterScreen
-import com.example.waygo.viewmodel.RegisterViewModel
-import com.example.waygo.viewmodel.TripViewModel
+import com.example.waygo.ui.viewmodel.RegisterViewModel
+import com.example.waygo.ui.viewmodel.TripViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

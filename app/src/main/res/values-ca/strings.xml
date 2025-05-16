@@ -88,22 +88,30 @@
     <string name="receiveEmail">Vols rebre correus electrònics?</string>
     <string name="country">País</string>
     <string name="next">Següent</string>
-    <string name="empty_fields">Camps buits</string>
-    <string name="invalid_email">Correu electrònic invàlid</string>
-    <string name="passwords_do_not_match">Les contrasenyes no coincideixen</string>
-    <string name="receive_email">Rebre correu</string>
-    <string name="password_recovery_email_sent">Correu de recuperació de contrasenya enviat</string>
-    <string name="enter_email">Introdueix el correu electrònic</string>
-    <string name="password_recovery">Recuperació de contrasenya</string>
-    <string name="recover_password">Recuperar contrasenya</string>
-    <string name="sending_recovery_email">Enviant correu de recuperació</string>
-    <string name="forgot_password">Has oblidat la contrasenya?</string>
-    <string name="verification_email_sent">Correu de verificació enviat</string>
-    <string name="verification_email_failed">Error en enviar el correu de verificació</string>
-    <string name="registration_failed">Error en el registre</string>
-    <string name="email_not_verified">Correu no verificat</string>
-    <string name="continue_button">Botó continuar</string>
-    <string name="username_taken">Nom d usuari en ús</string>
+    <string name="empty_fields">empty_fields</string>
+    <string name="invalid_email">invalid_email</string>
+    <string name="passwords_do_not_match">passwords_do_not_match</string>
+    <string name="receive_email">receive_email</string>
+    <string name="password_recovery_email_sent">password_recovery_email_sent</string>
+    <string name="enter_email">enter_email</string>
+    <string name="password_recovery">password_recovery</string>
+    <string name="recover_password">recover_password</string>
+    <string name="sending_recovery_email">sending_recovery_email</string>
+    <string name="forgot_password">forgot_password</string>
+    <string name="verification_email_sent">verification_email_sent</string>
+    <string name="verification_email_failed">verification_email_failed</string>
+    <string name="registration_failed">registration_failed</string>
+    <string name="email_not_verified">email_not_verified</string>
+    <string name="continue_button">continue_button</string>
+    <string name="username_taken">username_taken</string>
 
+    <string name="home_title">Pagina Inicial(CA)</string>
+
+    <string name="error_invalid_email">Correu electrònic invàlid</string>
+    <string name="error_password_too_short">La contrasenya ha de tenir almenys 6 caràcters</string>
+    <string name="error_password_mismatch">Les contrasenyes no coincideixen</string>
+    <string name="error_required_field">Camp requerit</string>
+    <string name="error_mobile_digits">Ha de contenir 10 dígits</string>
+    <string name="error_pin_digits">Ha de contenir 6 dígits</string>
 
 </resources>

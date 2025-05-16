@@ -25,16 +25,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.window.Popup
 import com.example.waygo.R
-import com.example.waygo.dao.UserDao
-import com.example.waygo.entity.UserEntity
-import com.example.waygo.viewmodel.RegisterViewModel
+import com.example.waygo.data.local.dao.UserDao
+import com.example.waygo.ui.viewmodel.RegisterViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.auth.AuthState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.security.MessageDigest
 
 
 fun isValidEmail(email: String): Boolean {

@@ -31,8 +31,6 @@ import androidx.compose.runtime.*
 import androidx.compose.foundation.background
 import androidx.compose.material.icons.filled.Person
 import android.app.DatePickerDialog
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,8 +41,8 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.example.waygo.model.Trip
-import com.example.waygo.viewmodel.TripViewModel
+import com.example.waygo.domain.model.Trip
+import com.example.waygo.ui.viewmodel.TripViewModel
 import androidx.compose.ui.window.Popup
 import com.google.firebase.auth.FirebaseAuth
 

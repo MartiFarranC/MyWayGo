@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
     id("com.google.gms.google-services")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -21,7 +22,13 @@ android {
     }
 
     buildTypes {
+        debug{
+            buildConfigField("String", "HOTELS_API_URL", "\"http://13.39.162.212\"")
+            buildConfigField("String", "GROUP_ID", "\"G99\"")
+        }
         release {
+            buildConfigField("String", "GROUP_ID", "\"G99\"")
+            buildConfigField("String", "HOTELS_API_URL", "\"http://13.39.162.212\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -38,6 +45,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -52,6 +60,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.protolite.well.known.types)
     implementation(libs.androidx.material.icons.extended)
@@ -66,13 +75,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-
-//    implementation("androidx.room:room-runtime:2.5.2")
-//    kapt("androidx.room:room-compiler:2.5.2")
-//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
     implementation ("androidx.datastore:datastore-preferences:1.1.3")
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
@@ -86,18 +88,32 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
+
     testImplementation("androidx.room:room-testing:2.6.1")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    //retrofit
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    //image
+    implementation("io.coil-kt:coil:2.5.0")
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
+    implementation("androidx.compose.material:material-icons-extended")
+
+    //carrusel
+    implementation("androidx.compose.foundation:foundation:1.6.0")
 
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     implementation("com.google.firebase:firebase-analytics")
 
-    implementation ("com.google.firebase:firebase-auth")
-
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
-
-    // Add the dependency for the Firebase Authentication library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-auth")
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }

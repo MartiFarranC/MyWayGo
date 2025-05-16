@@ -8,8 +8,8 @@ import com.example.waygo.ui.theme.WayGoTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
-import com.example.waygo.viewmodel.TripViewModel
-import com.example.waygo.dao.TripDao
+import com.example.waygo.ui.viewmodel.TripViewModel
+import com.example.waygo.data.local.dao.TripDao
 import com.example.waygo.database.AppDatabase
 import com.example.waygo.viewmodel.TripViewModelFactory
 import androidx.lifecycle.ViewModelProvider

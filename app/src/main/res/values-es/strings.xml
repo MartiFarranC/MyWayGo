@@ -88,21 +88,31 @@
     <string name="receiveEmail">¿Quieres recibir correos electrónicos?</string>
     <string name="country">País</string>
     <string name="next">Siguiente</string>
-    <string name="empty_fields">Campos vacíos</string>
-    <string name="invalid_email">Correo electrónico inválido</string>
-    <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
-    <string name="receive_email">Recibir correo</string>
-    <string name="password_recovery_email_sent">Correo de recuperación de contraseña enviado</string>
-    <string name="enter_email">Introduce el correo electrónico</string>
-    <string name="password_recovery">Recuperación de contraseña</string>
-    <string name="recover_password">Recuperar contraseña</string>
-    <string name="sending_recovery_email">Enviando correo de recuperación</string>
-    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
-    <string name="verification_email_sent">Correo de verificación enviado</string>
-    <string name="verification_email_failed">Error al enviar el correo de verificación</string>
-    <string name="registration_failed">Registro fallido</string>
-    <string name="email_not_verified">Correo no verificado</string>
-    <string name="continue_button">Botón continuar</string>
-    <string name="username_taken">Nombre de usuario en uso</string>
+    <string name="empty_fields">empty_fields</string>
+    <string name="invalid_email">invalid_email</string>
+    <string name="passwords_do_not_match">passwords_do_not_match</string>
+    <string name="receive_email">receive_email</string>
+    <string name="password_recovery_email_sent">password_recovery_email_sent</string>
+    <string name="enter_email">enter_email</string>
+    <string name="password_recovery">password_recovery</string>
+    <string name="recover_password">recover_password</string>
+    <string name="sending_recovery_email">sending_recovery_email</string>
+    <string name="forgot_password">forgot_password</string>
+    <string name="verification_email_sent">verification_email_sent</string>
+    <string name="verification_email_failed">verification_email_failed</string>
+    <string name="registration_failed">registration_failed</string>
+    <string name="email_not_verified">email_not_verified</string>
+    <string name="continue_button">continue_button</string>
+    <string name="username_taken">username_taken</string>
+
+    <string name="home_title">Home Page (ES)</string>
+
+    <!-- Errores de validación en Español -->
+    <string name="error_invalid_email">Email inválido</string>
+    <string name="error_password_too_short">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="error_password_mismatch">La contraseña no coincide</string>
+    <string name="error_required_field">Campo requerido</string>
+    <string name="error_mobile_digits">Debe tener 10 dígitos</string>
+    <string name="error_pin_digits">Debe tener 6 dígitos</string>
 
 </resources>

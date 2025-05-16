@@ -16,23 +16,18 @@ import androidx.navigation.NavController
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.window.Popup
 import com.example.waygo.R
-import com.example.waygo.dao.UserDao
-import com.example.waygo.entity.UserEntity
-import com.example.waygo.viewmodel.RegisterViewModel
+import com.example.waygo.data.local.dao.UserDao
+import com.example.waygo.data.local.entity.UserEntity
+import com.example.waygo.ui.viewmodel.RegisterViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.auth.AuthState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.security.MessageDigest
 import java.util.Date
 
 @Composable

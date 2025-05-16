@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Popup
 import com.example.waygo.R
-import com.example.waygo.dao.UserDao
+import com.example.waygo.data.local.dao.UserDao
 import com.google.firebase.auth.FirebaseAuth
 //import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.auth.AuthState
 

@@ -13,8 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.waygo.R
-import com.example.waygo.entity.UserEntity
-import com.example.waygo.viewmodel.RegisterViewModel
+import com.example.waygo.data.local.entity.UserEntity
+import com.example.waygo.ui.viewmodel.RegisterViewModel
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Date
 

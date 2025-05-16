@@ -2,14 +2,10 @@ package com.example.waygo
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import com.example.waygo.dao.TripDao
+import com.example.waygo.data.local.dao.TripDao
 import com.example.waygo.database.AppDatabase
-import com.example.waygo.entity.TripEntity
-import kotlinx.coroutines.runBlocking
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Before
-import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
