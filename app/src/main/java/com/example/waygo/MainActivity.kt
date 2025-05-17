@@ -13,7 +13,9 @@ import com.example.waygo.data.local.dao.TripDao
 import com.example.waygo.database.AppDatabase
 import com.example.waygo.viewmodel.TripViewModelFactory
 import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val tripViewModel: TripViewModel by lazy {
         val tripDao: TripDao = AppDatabase.getInstance(this).tripDao()
@@ -32,6 +34,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
+
 
 @Composable
 fun MainScreen(tripViewModel: TripViewModel) {

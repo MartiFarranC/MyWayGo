@@ -25,6 +25,10 @@ import com.example.waygo.ui.screens.ToDoListScreen
 import com.example.waygo.ui.screens.HelpScreen
 import com.example.waygo.ui.screens.PasswordRecoveryScreen
 import com.example.waygo.ui.screens.SecondRegisterScreen
+import com.example.waygo.ui.view.AllReservationsScreen
+import com.example.waygo.ui.view.HomeHotel
+import com.example.waygo.ui.view.HomeScreen
+import com.example.waygo.ui.view.HotelsScreen
 import com.example.waygo.ui.viewmodel.RegisterViewModel
 import com.example.waygo.ui.viewmodel.TripViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -80,5 +84,8 @@ fun NavGraph(navController: NavHostController, tripViewModel: TripViewModel) {
         composable("help") { HelpScreen(navController) }
         composable("second_register") { SecondRegisterScreen(navController, userDao, registerViewModel) }
         composable("password_recovery") { PasswordRecoveryScreen(navController = navController) }
+        composable("hotels") { HotelsScreen(navController) }
+        composable("hotelsmenu") { HomeScreen(navController) }
+
     }
 }

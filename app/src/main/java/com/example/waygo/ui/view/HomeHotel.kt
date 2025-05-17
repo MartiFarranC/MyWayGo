@@ -11,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -20,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -28,17 +26,10 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.waygo.BuildConfig
 import com.example.waygo.domain.model.Hotel
-import com.example.waygo.domain.model.Reservation
-import com.example.waygo.ui.components.ReservationRow
-import com.example.waygo.ui.components.RoomImageCarousel
-import com.example.waygo.ui.components.RoomImageCarouselWithControls
 import com.example.waygo.ui.viewmodel.BookViewModel
-import com.example.waygo.ui.viewmodel.HotelDetailViewModel
 import com.example.waygo.ui.viewmodel.ReservationsAllViewModel
-import com.example.waygo.ui.viewmodel.ReservationsViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 
 // ------------------------ Navigation Destinations ---------------------------
 sealed class Screen(val route: String, val icon: ImageVector, val label: String) {

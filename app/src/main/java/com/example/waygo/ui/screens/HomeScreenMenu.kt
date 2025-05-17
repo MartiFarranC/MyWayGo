@@ -56,6 +56,15 @@ fun HomeScreenMenu(
                     )
 
                     Button(onClick = {
+                        navController.navigate("hotels") {
+                            popUpTo("hotels") { inclusive = true }
+                        }
+                    }) {
+                        Text(text = stringResource(id = R.string.cost_estimation))
+                    }
+
+
+                    Button(onClick = {
                         navController.navigate("cost") {
                             popUpTo("cost") { inclusive = true }
                         }

@@ -1,4 +1,4 @@
-package com.example.waygo.utils
+package com.example.waygo
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
