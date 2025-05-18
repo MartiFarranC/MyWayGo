@@ -59,7 +59,7 @@ fun HomeScreenMenu(
                             popUpTo("hotels") { inclusive = true }
                         }
                     }) {
-                        Text(text = stringResource(id = R.string.cost_estimation))
+                        Text(text = stringResource(id = R.string.hotels))
                     }
 
 

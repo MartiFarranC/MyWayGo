@@ -62,7 +62,7 @@
     <string name="register_screen">Register Screen</string>
     <string name="mail">Mail</string>
     <string name="have_account">Do you have an account?</string>
-    <string name="terms_content">Here are the terms and conditions...</string>
+    <string name="terms_content">Here are the terms and conditions…</string>
     <string name="accept">Accept</string>
     <string name="new_task">New Task</string>
     <string name="add_task">Add Task</string>
@@ -88,31 +88,29 @@
     <string name="receiveEmail">Do you want to receive emails?</string>
     <string name="country">Country</string>
     <string name="next">next</string>
-    <string name="empty_fields">empty_fields</string>
-    <string name="invalid_email">invalid_email</string>
-    <string name="passwords_do_not_match">passwords_do_not_match</string>
-    <string name="receive_email">receive_email</string>
-    <string name="password_recovery_email_sent">password_recovery_email_sent</string>
-    <string name="enter_email">enter_email</string>
-    <string name="password_recovery">password_recovery</string>
-    <string name="recover_password">recover_password</string>
-    <string name="sending_recovery_email">sending_recovery_email</string>
-    <string name="forgot_password">forgot_password</string>
-    <string name="verification_email_sent">verification_email_sent</string>
-    <string name="verification_email_failed">verification_email_failed</string>
-    <string name="registration_failed">registration_failed</string>
-    <string name="email_not_verified">email_not_verified</string>
-    <string name="continue_button">continue_button</string>
-    <string name="username_taken">username_taken</string>
-
-    <string name="home_title">Home Page (EN)</string>
-
-    <!-- Validation errors in English -->
+    <string name="empty_fields">Please fill in all required fields.</string>
+    <string name="invalid_email">Please enter a valid email address.</string>
+    <string name="passwords_do_not_match">Passwords do not match.</string>
+    <string name="receive_email">Receive email notifications</string>
+    <string name="password_recovery_email_sent">Password recovery email sent successfully.</string>
+    <string name="enter_email">Enter your email address</string>
+    <string name="password_recovery">Password Recovery</string>
+    <string name="recover_password">Recover Password</string>
+    <string name="sending_recovery_email">Sending recovery email…</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="verification_email_sent">Verification email sent.</string>
+    <string name="verification_email_failed">Failed to send verification email.</string>
+    <string name="registration_failed">Registration failed. Please try again.</string>
+    <string name="email_not_verified">Your email address has not been verified.</string>
+    <string name="continue_button">Continue</string>
+    <string name="username_taken">This username is already taken.</string>
+    <string name="home_title">Home Page</string>
     <string name="error_invalid_email">Invalid email</string>
     <string name="error_password_too_short">Password must be at least 6 characters</string>
     <string name="error_password_mismatch">Passwords do not match</string>
     <string name="error_required_field">Field required</string>
     <string name="error_mobile_digits">Must contain 10 digits</string>
     <string name="error_pin_digits">Must contain 6 digits</string>
+    <string name="hotels">Hotels</string>
 
 </resources>
