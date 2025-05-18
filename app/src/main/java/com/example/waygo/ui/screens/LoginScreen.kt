@@ -30,8 +30,12 @@ import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun LoginScreen(navController: NavController, userDao: UserDao) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+//    var email by remember { mutableStateOf("") }
+//    var password by remember { mutableStateOf("") }
+
+    var email by remember { mutableStateOf("holavitor@gmail.com") } //Usuari per defecte per a testejar (inventat)
+    var password by remember { mutableStateOf("123456") }
+
     var showMessage by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
     val context = LocalContext.current

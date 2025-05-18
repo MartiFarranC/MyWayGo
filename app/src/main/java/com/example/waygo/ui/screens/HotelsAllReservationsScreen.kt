@@ -83,7 +83,7 @@ fun AllReservationsScreen(groups: Map<String, List<Reservation>>, vm: Reservatio
                     res = res,
                     onCancel = {
 
-                        Toast.makeText(context, "Esta pantalla es exclusiva del profesor", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Esta pantalla es exclusiva del profesor", Toast.LENGTH_SHORT).show() //TODO arreglar
                         //vm.cancel(res)
                     }
                 )

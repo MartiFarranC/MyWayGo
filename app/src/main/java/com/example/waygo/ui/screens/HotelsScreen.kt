@@ -1,20 +1,27 @@
 package com.example.waygo.ui.view
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.composable
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.waygo.R
 import com.example.waygo.ui.screens.BookScreen
 import com.example.waygo.ui.screens.FormValidationScreen
 import com.example.waygo.ui.screens.HomeHotel
@@ -33,8 +40,20 @@ fun HotelsScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("RemotePersistence Screen") },
+                title = { Text(stringResource(id = R.string.home_title))},
                 actions = {
+                    Box{
+                        IconButton(onClick = {
+                            navController.navigate("home") {
+                                popUpTo("home") { inclusive = true }
+                            }
+                        }) {
+                            Icon(
+                                imageVector = Icons.Outlined.ArrowBackIosNew,
+                                contentDescription = "Back"
+                            )
+                        }
+                    }
                     Box {
                         IconButton(onClick = { showSettingsMenu = !showSettingsMenu }) {
                             Icon(
