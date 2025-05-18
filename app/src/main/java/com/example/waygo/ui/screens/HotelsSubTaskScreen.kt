@@ -1,4 +1,4 @@
-package com.example.waygo.ui.view
+package com.example.waygo.ui.screens
 
 import com.example.waygo.domain.model.SubTask
 import androidx.compose.foundation.layout.Arrangement

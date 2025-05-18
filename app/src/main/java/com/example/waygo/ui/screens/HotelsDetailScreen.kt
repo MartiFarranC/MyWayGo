@@ -1,4 +1,4 @@
-package com.example.waygo.ui.view
+package com.example.waygo.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

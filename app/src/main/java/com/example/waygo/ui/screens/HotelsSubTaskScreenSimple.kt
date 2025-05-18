@@ -1,4 +1,4 @@
-package com.example.waygo.ui.view
+package com.example.waygo.ui.screens
 
 
 

@@ -21,13 +21,10 @@ import com.example.waygo.ui.screens.TermConditionsScreen
 import com.example.waygo.ui.screens.AboutScreen
 import com.example.waygo.ui.screens.CostsScreen
 import com.example.waygo.ui.screens.SettingsScreen
-import com.example.waygo.ui.screens.ToDoListScreen
 import com.example.waygo.ui.screens.HelpScreen
 import com.example.waygo.ui.screens.PasswordRecoveryScreen
 import com.example.waygo.ui.screens.SecondRegisterScreen
-import com.example.waygo.ui.view.AllReservationsScreen
-import com.example.waygo.ui.view.HomeHotel
-import com.example.waygo.ui.view.HomeScreen
+import com.example.waygo.ui.screens.HomeScreen
 import com.example.waygo.ui.view.HotelsScreen
 import com.example.waygo.ui.viewmodel.RegisterViewModel
 import com.example.waygo.ui.viewmodel.TripViewModel
@@ -79,7 +76,6 @@ fun NavGraph(navController: NavHostController, tripViewModel: TripViewModel) {
         composable("terms") { TermConditionsScreen(navController) }
         composable("about") { AboutScreen(navController) }
         composable("cost") { CostsScreen(navController) }
-        composable("todo") { ToDoListScreen(navController) }
         composable("settings") { SettingsScreen(navController) }
         composable("help") { HelpScreen(navController) }
         composable("second_register") { SecondRegisterScreen(navController, userDao, registerViewModel) }

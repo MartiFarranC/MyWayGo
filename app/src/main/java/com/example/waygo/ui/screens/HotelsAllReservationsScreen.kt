@@ -1,4 +1,4 @@
-package com.example.waygo.ui.view
+package com.example.waygo.ui.screens
 
 import android.util.Log
 import android.widget.Toast
@@ -23,7 +23,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.example.waygo.domain.model.Reservation
 import com.example.waygo.ui.components.ReservationRow
 import com.example.waygo.ui.viewmodel.ReservationsAllViewModel

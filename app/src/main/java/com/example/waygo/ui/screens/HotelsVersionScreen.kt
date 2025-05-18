@@ -1,5 +1,5 @@
-// VersionScreen.kt
-package com.example.waygo.ui.view
+// HotelsVersionScreen.kt
+package com.example.waygo.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

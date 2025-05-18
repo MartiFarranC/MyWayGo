@@ -9,16 +9,20 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import com.example.waygo.R
 import androidx.navigation.compose.composable
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-
+import com.example.waygo.ui.screens.BookScreen
+import com.example.waygo.ui.screens.FormValidationScreen
+import com.example.waygo.ui.screens.HomeHotel
+import com.example.waygo.ui.screens.HotelDetailScreen
+import com.example.waygo.ui.screens.HotelsSettingsScreen
+import com.example.waygo.ui.screens.ReservationsScreen
+import com.example.waygo.ui.screens.SubTaskScreen
+import com.example.waygo.ui.screens.VersionScreen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,7 +88,7 @@ fun HotelsScreen(navController: NavController) {
 
                 /* ---------- Tabs rendered directly ---------- */
                 composable("book")              { BookScreen(nav) }
-                composable("my_reservations")   { ReservationsScreen()}
+                composable("my_reservations")   { ReservationsScreen() }
                 composable("all_reservations")  { ReservationsScreen() }
 
                 /* ---------- Hotel detail ---------- */
@@ -107,7 +111,7 @@ fun HotelsScreen(navController: NavController) {
                 }
 
                 /* ---------- Other app sections ---------- */
-                composable("settings")  { SettingsScreen(nav) }
+                composable("settings")  { HotelsSettingsScreen(nav) }
                 composable("version")   { VersionScreen(nav) }
                 composable("formValidation") { FormValidationScreen(nav) }
                 composable(

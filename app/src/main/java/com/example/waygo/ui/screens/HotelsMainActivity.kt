@@ -1,4 +1,4 @@
-package com.example.waygo.ui.view
+package com.example.waygo.ui.screens
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -31,18 +31,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.waygo.ui.theme.WayGoTheme
-import com.example.waygo.ui.view.SettingsScreen
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.waygo.R
-import com.example.waygo.ui.view.BookScreen
-import com.example.waygo.ui.view.FormValidationScreen
-import com.example.waygo.ui.view.HomeHotel
-import com.example.waygo.ui.view.HotelDetailScreen
-import com.example.waygo.ui.view.ReservationsScreen
-import com.example.waygo.ui.view.SubTaskScreen
-import com.example.waygo.ui.view.VersionScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -62,7 +54,7 @@ class MainActivity : ComponentActivity() {
 
                     /* ---------- Tabs rendered directly ---------- */
                     composable("book")              { BookScreen(nav) }
-                    composable("my_reservations")   { ReservationsScreen()}
+                    composable("my_reservations")   { ReservationsScreen() }
                     composable("all_reservations")  { ReservationsScreen() }
 
                     /* ---------- Hotel detail ---------- */
