@@ -31,11 +31,13 @@ import androidx.compose.runtime.*
 import androidx.compose.foundation.background
 import androidx.compose.material.icons.filled.Person
 import android.app.DatePickerDialog
+import android.widget.Toast
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.Collections
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.remember
@@ -60,7 +62,8 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
         tripViewModel.loadTripsByUserId(userId)
     }
 
-val userTrips by remember { derivedStateOf { trips.filter { it.userId == userId } } }
+    val userTrips by remember { derivedStateOf { trips.filter { it.userId == userId } } }
+    val context = LocalContext.current
 
     Box(modifier = Modifier.padding(paddingValues)) {
         Column(
@@ -122,17 +125,33 @@ val userTrips by remember { derivedStateOf { trips.filter { it.userId == userId 
                                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                                     modifier = Modifier.padding(horizontal = 8.dp)
                                 )
-                                Button(
-                                    onClick = {
-                                        editDialog = true
-                                        selectedTrip = trip
-                                    },
-                                    modifier = Modifier.padding(horizontal = 8.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Edit,
-                                        contentDescription = stringResource(id = R.string.profile),
-                                    )
+                                Row {
+                                    IconButton(
+                                        onClick = {
+                                            Toast.makeText(
+                                                context,
+                                                "En desenvolupament", //TODO
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+//                                        onClick = onShowCarousel,
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Collections,
+                                            contentDescription = "Preview"
+                                        )
+                                    }
+                                    Button(
+                                        onClick = {
+                                            editDialog = true
+                                            selectedTrip = trip
+                                        },
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Edit,
+                                            contentDescription = stringResource(id = R.string.edit_trip),
+                                        )
+                                    }
                                 }
                             }
                             Text(
@@ -307,7 +326,10 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                     ) {
                         Box(
                             modifier = Modifier
-                                .background(Color.Green.copy(alpha = 0.8f), shape =  RoundedCornerShape(8.dp)) // Color translúcid i puntes rodones
+                                .background(
+                                    Color.Green.copy(alpha = 0.8f),
+                                    shape = RoundedCornerShape(8.dp)
+                                ) // Color translúcid i puntes rodones
                                 .padding(16.dp),
                             contentAlignment = Alignment.Center
                         ) {
