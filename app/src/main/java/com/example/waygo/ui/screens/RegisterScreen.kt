@@ -1,5 +1,6 @@
 package com.example.waygo.ui.screens
 
+import android.app.DatePickerDialog
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -35,13 +36,8 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import java.util.Calendar
 import java.util.Date
-
-
-fun isValidEmail(email: String): Boolean {
-    return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-}
 
 @Composable
 fun RegisterScreen(navController: NavController, userDao: UserDao, viewModel: RegisterViewModel) {
@@ -61,7 +57,6 @@ fun RegisterScreen(navController: NavController, userDao: UserDao, viewModel: Re
 
     var showVerificationPrompt by remember { mutableStateOf(false) }
     var showContinueButton by remember { mutableStateOf(false) }
-//    var hashedPassword by remember { mutableStateOf("") }
 
     val context = LocalContext.current
 
@@ -127,19 +122,72 @@ fun RegisterScreen(navController: NavController, userDao: UserDao, viewModel: Re
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
+        val context = LocalContext.current
 
-        Button(
-            onClick = { datePickerDialog.show() },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Text(
-                text = selectedDate?.let { java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(it) }
-                    ?: stringResource(id = R.string.birthdate)
-            )
-            birthdate = (selectedDate ?: java.util.Date())
+        // Variable que guarda la data seleccionada (pot ser null)
+        var selectedDate by remember { mutableStateOf<java.util.Date?>(null) }
+
+        // Calendar per gestionar les dates i inicialitzar el DatePickerDialog
+        val calendar = Calendar.getInstance()
+
+        // Si no hi ha data seleccionada, posem la data per defecte 1 gener 2000 al calendar
+        if (selectedDate == null) {
+            calendar.set(2000, Calendar.JANUARY, 1)
+        } else {
+            calendar.time = selectedDate!!
         }
+
+        val datePickerDialog = remember {
+            DatePickerDialog(
+                context,
+                { _, year, month, dayOfMonth ->
+                    calendar.set(year, month, dayOfMonth)
+                    val pickedDate = calendar.time
+                    val today = Calendar.getInstance().time
+
+                    if (pickedDate.before(today)) {
+                        selectedDate = pickedDate
+                    }
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            )
+        }
+
+        Button(onClick = {
+            datePickerDialog.show()
+        }) {
+            Text(
+                text = selectedDate?.let {
+                    java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(it)
+                } ?: stringResource(id = R.string.birthdate)
+            )
+        }
+
+//        Button(
+//            onClick = {
+//                if (selectedDate == null) {
+//                    val cal = Calendar.getInstance()
+//                    cal.set(2000, Calendar.JANUARY, 1, 0, 0, 0)
+//                    cal.set(Calendar.MILLISECOND, 0)
+//                    selectedDate = cal.time
+//                    birthdate = selectedDate!!
+//                }
+//                datePickerDialog.show()
+//            },
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(16.dp)
+//        ) {
+//            Text(
+//                text = selectedDate?.let {
+//                    java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(it)
+//                } ?: stringResource(id = R.string.birthdate)
+//            )
+//        }
+
+
         OutlinedTextField(
             value = address,
             onValueChange = { address = it },

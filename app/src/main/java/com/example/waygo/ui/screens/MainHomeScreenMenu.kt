@@ -61,27 +61,6 @@ fun HomeScreenMenu(
                         Text(text = stringResource(id = R.string.hotels))
                     }
 
-
-                    Button(onClick = {
-                        navController.navigate("cost") {
-                            popUpTo("cost") { inclusive = true }
-                        }
-                    }) {
-                        Text(text = stringResource(id = R.string.cost_estimation))
-                    }
-
-                    Spacer(Modifier.height(12.dp))
-
-                    Button(onClick = {
-                        navController.navigate("todo") {
-                            popUpTo("todo") { inclusive = true }
-                        }
-                    }) {
-                        Text(text = stringResource(id = R.string.todo_list))
-                    }
-
-                    Spacer(Modifier.height(12.dp))
-
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
                     Text(text = stringResource(id = R.string.configuration), modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleMedium)

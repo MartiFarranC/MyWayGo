@@ -50,7 +50,7 @@ fun HelpScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(onClick = {
-            // Handle feedback submission
+            feedback = ""
         }) {
             Text(text = stringResource(id = R.string.submit_feedback))
         }
