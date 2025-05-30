@@ -16,14 +16,8 @@ class TaskRepositoryImpl @Inject constructor(
     private val subTaskDao: SubTaskDao
 ) : TaskRepository {
 
-    // Listas mutables para almacenar datos en memoria
-    //private val tasks = mutableListOf<Task>()
-    //private val subTasks = mutableListOf<SubTask>()
-
     override suspend fun getTasks(): List<Task> {
         val taskEntities = taskDao.getTasks()
-        // Podríamos obtener todas las subtasks de golpe para optimizar
-        // y luego agruparlas, pero para el ejemplo haremos una consulta por tarea.
         return taskEntities.map { taskEntity ->
             val subs = subTaskDao.getSubTasksForTask(taskEntity.id).map { it.toDomain() }
             taskEntity.toDomain(subs)
@@ -31,15 +25,11 @@ class TaskRepositoryImpl @Inject constructor(
     }
 
     override suspend  fun addTask(task: Task) {
-        // Insertar la tarea en la DB
         taskDao.addTask(task.toEntity())
-        // SubTasks se gestionan por separado si fuera necesario
     }
 
     override suspend  fun deleteTask(taskId: Int) {
         taskDao.deleteTask(taskId)
-        // Por la ForeignKey con onDelete = CASCADE,
-        // las subtareas también se borran automáticamente
     }
 
     override suspend  fun updateTask(task: Task) {

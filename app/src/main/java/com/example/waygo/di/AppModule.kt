@@ -33,8 +33,6 @@ object AppModule {
     ): SharedPreferences =
         context.getSharedPreferences("${BuildConfig.APPLICATION_ID}_preferences", Context.MODE_PRIVATE)
 
-        // context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE) //bad implementation
-
     @Provides
     @Singleton
     fun provideSharedPrefsManager(
@@ -42,15 +40,6 @@ object AppModule {
         @ApplicationContext context: Context
     ): SharedPrefsManager =
         SharedPrefsManager(sharedPreferences, context)
-
-
-
-//    @Provides
-//    @Singleton
-//    fun provideFormValidationViewModel(
-//        @ApplicationContext context: Context
-//    ): FormValidationViewModel = FormValidationViewModel(context)
-
 
     @Provides
     @Singleton
@@ -86,8 +75,6 @@ object AppModule {
     @Provides
     @Singleton
     fun provideHotelRepo(api: HotelApiService, taskDao: TaskDao): HotelRepository =
-        HotelRepositoryImpl(api, taskDao)
-
-
+        HotelRepositoryImpl(api)
 
 }

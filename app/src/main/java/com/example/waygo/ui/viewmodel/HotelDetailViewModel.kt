@@ -14,7 +14,6 @@ import com.example.waygo.utils.ErrorUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -28,8 +27,6 @@ class HotelDetailViewModel @Inject constructor(
     val uiState: StateFlow<HotelDetailUiState> = _uiState
 
     var showImageDialog by mutableStateOf(false)
-    fun showImageDialog() { showImageDialog = true }
-    fun hideImageDialog() { showImageDialog = false }
 
     fun selectRoom(room: Room) {
         _uiState.value = _uiState.value.copy(selectedRoom = room)
@@ -51,28 +48,20 @@ class HotelDetailViewModel @Inject constructor(
         }
     }
 
-//    fun reserveRoom(selectedRoom: Room) {
-//        Log.d("hoteldetail", "room: $selectedRoom")
-//        Log.i("hoteldetail", "room: $selectedRoom")
-//        Log.d("hoteldetail", "room: $selectedRoom")
-//    }
-
     /* -------- reserve selected room -------- */
     fun reserveRoom(room: Room) = viewModelScope.launch {
-
-        Log.d("reserveRoom called", "room: $room")
 
         val req = ReserveRequest(
             hotelId = uiState.value.hotel!!.id,
             roomId  = room.id,
             startDate = start,
             endDate   = end,
-            guestName = "Vitor", //CAMBIAR AQUI PARA TU USUARIO
-            guestEmail = "vitorlui@gmail.com" //CAMBIAR AQUI PARA TU USUARIO
+            guestName = "User", //TODO
+            guestEmail = "user@gmail.com"
         )
 
         try {
-            repo.reserve(groupId, req)   // we ignore response here
+            repo.reserve(groupId, req)
         } catch (e: HttpException) {
             val decodedError = ErrorUtils.extractErrorMessage(e)
             Log.e("BookViewModel", "HTTP error: ${decodedError}  $e")
@@ -84,36 +73,6 @@ class HotelDetailViewModel @Inject constructor(
     }
 }
 
-
-//try {
-//    val hotels = repo.getAvailability(groupId, s.format(fmt), e.format(fmt), city = city)
-//    _uiState.update { it.copy(loading = false, hotels = hotels) }
-//} catch (e: HttpException) {
-//
-//    val decodedError = ErrorUtils.extractErrorMessage(e)
-//
-//    Log.e("BookViewModel", "HTTP error: ${decodedError}  $e")
-//    _uiState.update { it.copy(loading = false, hotels = emptyList(), message = decodedError) }
-//
-//    _uiState.update {
-//        it.copy(
-//            loading = false,
-//            hotels = emptyList(),
-//            message = "Error: ${decodedError}}"
-//        )
-//    }
-//
-//} catch (e: Exception) {
-//    Log.e("BookViewModel", "Error: ${e.localizedMessage}")
-////            _uiState.update { it.copy(loading = false, hotels = emptyList()) }
-//    _uiState.update {
-//        it.copy(
-//            loading = false,
-//            hotels = emptyList(),
-//            message = "Error: ${e.message}}"
-//        )
-//    }
-//}
 
 data class HotelDetailUiState(
     val loading: Boolean = true,

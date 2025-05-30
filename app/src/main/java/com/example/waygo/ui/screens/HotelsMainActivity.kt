@@ -85,35 +85,6 @@ class MainActivity : ComponentActivity() {
                         arguments = listOf(navArgument("taskId") { type = NavType.IntType })
                     ) { SubTaskScreen(nav) }
                 }
-
-
-
-//                NavHost(navController = navController, startDestination = "home") {
-//                    composable("home") {
-//                        HomeHotel(navController)
-//                    }
-//                    composable("settings") {
-//                        SettingsScreen(navController)
-//                    }
-//
-//                    composable("version") {
-//                        VersionScreen(navController)
-//                    }
-//                    composable("formValidation") {
-//                        FormValidationScreen(navController)
-//                    }
-//                    composable(
-//                        route = "subtasks/{taskId}",
-//                        arguments = listOf(navArgument("taskId") { type = NavType.IntType })
-//                    ) {
-//                        SubTaskScreen(navController = navController)
-//                    }
-//                }
-
-
-
-
-
             }
         }
     }
@@ -149,7 +120,7 @@ fun HomeScreen(navController: NavController) {
                                         contentDescription = "Version Icon"
                                     )
                                 },
-                                text = { Text("Version") },
+                                text = { stringResource(id = R.string.version) },
                                 onClick = {
                                     showSettingsMenu = false
                                     navController.navigate("version")
@@ -162,7 +133,7 @@ fun HomeScreen(navController: NavController) {
                                         contentDescription = "Settings Icon"
                                     )
                                 },
-                                text = { Text("Settings") },
+                                text = { stringResource(id = R.string.settings)},
                                 onClick = {
                                     showSettingsMenu = false
                                     navController.navigate("settings")
@@ -192,50 +163,3 @@ fun HomeScreenPreview() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Screen1(navController: NavController) {
-
-    var showSettingsMenu by remember { mutableStateOf(false) }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(id = R.string.home_title)) },
-                actions = {
-                    Box {
-                        IconButton(onClick = { showSettingsMenu = !showSettingsMenu }) {
-                            Icon(
-                                imageVector = Icons.Outlined.Settings,
-                                contentDescription = "Settings"
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = showSettingsMenu,
-                            onDismissRequest = { showSettingsMenu = false }
-                        ) {
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Filled.Build,
-                                        contentDescription = "Child Screen 1"
-                                    )
-                                },
-                                text = { Text("Version") },
-                                onClick = {
-                                    showSettingsMenu = false
-                                }
-                            )
-                        }
-                    }
-                }
-            )
-        }
-    ) { innerPadding ->
-        // Home screen content
-        Text(
-            text = stringResource(id = R.string.home_title),
-            modifier = Modifier.padding(innerPadding)
-        )
-    }
-}

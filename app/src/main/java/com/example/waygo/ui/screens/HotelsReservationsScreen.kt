@@ -59,8 +59,7 @@ fun ReservationsScreen(vm: ReservationsViewModel = hiltViewModel()) {
                     modifier = Modifier.statusBarsPadding().padding(start = 16.dp, bottom = 12.dp)
                 )
 
-                /*  refresh icon  */
-                IconButton(onClick = { vm.load() }) {       // ← recarga la lista
+                IconButton(onClick = { vm.load() }) {
                     Icon(
                         imageVector = Icons.Default.Refresh,
                         contentDescription = "Reload"

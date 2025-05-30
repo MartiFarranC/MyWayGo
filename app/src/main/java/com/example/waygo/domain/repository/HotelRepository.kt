@@ -4,14 +4,6 @@ import com.example.waygo.domain.model.Hotel
 import com.example.waygo.domain.model.Reservation
 import com.example.waygo.domain.model.ReserveRequest
 
-//interface HotelRepository {
-//    suspend fun getHotels(groupId: String): List<Hotel>
-//    suspend fun getAvailability(groupId: String, start: String, end: String): List<Hotel>
-//    suspend fun reserve(groupId: String, request: ReserveRequest): Reservation
-//
-//}
-
-
 interface HotelRepository {
 
     /* ---------- Hotels & Availability ---------- */

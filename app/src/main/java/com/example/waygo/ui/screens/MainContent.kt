@@ -31,7 +31,6 @@ import androidx.compose.runtime.*
 import androidx.compose.foundation.background
 import androidx.compose.material.icons.filled.Person
 import android.app.DatePickerDialog
-import android.widget.Toast
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -49,7 +48,12 @@ import androidx.compose.ui.window.Popup
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun Content1(navController: NavController, paddingValues: PaddingValues, tripViewModel: TripViewModel) {
+fun Content1(
+    navController: NavController,
+    paddingValues: PaddingValues,
+    tripViewModel: TripViewModel,
+    onOpenGallery: (Int) -> Unit = { tripId -> navController.navigate("gallery/$tripId")
+}) {
 
     val auth = FirebaseAuth.getInstance()
     val userId = auth.currentUser?.uid ?: "guest"
@@ -128,19 +132,15 @@ fun Content1(navController: NavController, paddingValues: PaddingValues, tripVie
                                 Row {
                                     IconButton(
                                         onClick = {
-                                            Toast.makeText(
-                                                context,
-                                                "En desenvolupament", //TODO
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                            onOpenGallery(trip.id)
                                         }
-//                                        onClick = onShowCarousel,
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Collections,
                                             contentDescription = "Preview"
                                         )
                                     }
+
                                     Button(
                                         onClick = {
                                             editDialog = true
@@ -232,10 +232,9 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
     var newParticipants by remember { mutableStateOf("") }
     var participants by remember { mutableStateOf(listOf<String>()) }
     var showMessage by remember { mutableStateOf(false) }
-    var userId by remember { mutableStateOf("") }
 
     val calendar = Calendar.getInstance()
-    val today = calendar.timeInMillis // Obtenim la data actual en mil·lisegons
+    val today = calendar.timeInMillis
 
     val startDatePickerDialog = DatePickerDialog(
         LocalContext.current,
@@ -294,15 +293,15 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                         onValueChange = { newDestination = it },
                         label = { Text(stringResource(id = R.string.destinations)) },
                         modifier = Modifier
-                            .weight(1f) // Assigna pes per ocupar espai disponible
+                            .weight(1f)
                             .padding(end = 8.dp)
                     )
 
                     IconButton(
                         onClick = {
                             if (newDestination.isNotEmpty()) {
-                                destinations = destinations + newDestination // Afegeix el nou participant a la llista
-                                newDestination = "" // Reinicia el camp de text
+                                destinations = destinations + newDestination
+                                newDestination = ""
                                 showMessage = true
                             }
                         },
@@ -329,7 +328,7 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                                 .background(
                                     Color.Green.copy(alpha = 0.8f),
                                     shape = RoundedCornerShape(8.dp)
-                                ) // Color translúcid i puntes rodones
+                                )
                                 .padding(16.dp),
                             contentAlignment = Alignment.Center
                         ) {
@@ -339,7 +338,7 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                             )
                         }
                         LaunchedEffect(Unit) {
-                            kotlinx.coroutines.delay(2000) // Mostra el missatge durant 2 segons
+                            kotlinx.coroutines.delay(2000)
                             showMessage = false
                         }
                     }
@@ -380,14 +379,14 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                         onValueChange = { newParticipants = it },
                         label = { Text(stringResource(id = R.string.participants)) },
                         modifier = Modifier
-                            .weight(1f) // Assigna pes per ocupar espai disponible
+                            .weight(1f)
                             .padding(end = 8.dp)
                     )
                     IconButton(
                         onClick = {
                             if (newParticipants.isNotEmpty()) {
-                                participants = participants + newParticipants // Afegeix el nou participant a la llista
-                                newParticipants = "" // Reinicia el camp de text
+                                participants = participants + newParticipants
+                                newParticipants = ""
                                 showMessage = true
                             }
                         },
@@ -427,7 +426,8 @@ fun TravelCreatorDialog(onDismiss: () -> Unit, onSave: (Trip) -> Unit) {
                                     participants = participants.joinToString(", "),
                                     startDate = startDate,
                                     endDate = endDate,
-                                    userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                                    userId = FirebaseAuth.getInstance().currentUser?.uid ?: "",
+                                    images = listOf()
                                 )
                             )
                         }
@@ -454,7 +454,6 @@ fun TravelEditDialog(
     onSave: (Trip) -> Unit,
     onDelete: (Trip) -> Unit
 ) {
-    val trips by tripViewModel.trips.collectAsState()
     var id by remember { mutableStateOf(trip.id) }
     var tripName by remember { mutableStateOf(trip.name) }
     var destinations by remember { mutableStateOf(trip.destinations.split(", ")) }
@@ -466,6 +465,7 @@ fun TravelEditDialog(
     var newDestination by remember { mutableStateOf("") }
     var newParticipants by remember { mutableStateOf("") }
     var userId by remember { mutableStateOf("") }
+    var images by remember { mutableStateOf(trip.images) }
 
     val calendar = Calendar.getInstance()
     val today = calendar.timeInMillis
@@ -581,7 +581,7 @@ fun TravelEditDialog(
                         endCalendar.set(endParts[2].toInt(), endParts[1].toInt() - 1, endParts[0].toInt())
 
                         if (startCalendar.timeInMillis <= endCalendar.timeInMillis) {
-                            onSave(Trip(id, tripName, destinations.joinToString(", "), participants.joinToString(", "), startDate, endDate, userId))                        }
+                            onSave(Trip(id, tripName, destinations.joinToString(", "), participants.joinToString(", "), startDate, endDate, userId, images))                        }
                     }
                 }
             })  {
@@ -601,7 +601,6 @@ fun TravelEditDialog(
             title = { Text(text = stringResource(id = R.string.destinations)) },
             text = {
                 Column {
-                    // Afegir nova destinació
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,

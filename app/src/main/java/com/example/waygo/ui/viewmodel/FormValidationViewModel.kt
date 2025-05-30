@@ -2,9 +2,12 @@ package com.example.waygo.ui.viewmodel
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import com.example.waygo.R
 import com.example.waygo.utils.FormValidationUtils
@@ -17,7 +20,6 @@ class FormValidationViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-    // Campos del formulario
     var email by mutableStateOf("")
         private set
 
@@ -94,13 +96,12 @@ class FormValidationViewModel @Inject constructor(
     }
 
     // Llamado desde la UI al presionar "Registrar"
+    @Composable
     fun onRegisterClicked(): Boolean {
         val allValid = validateAllFields()
-//        return allValid
 
         if (allValid) {
-            // Mostrar Toast
-            Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Perfect!", Toast.LENGTH_SHORT).show()
             return true
         }
 
@@ -119,27 +120,6 @@ class FormValidationViewModel @Inject constructor(
         val isMobileValid = FormValidationUtils.validateMobile(mobile)
         val isPinValid = FormValidationUtils.validatePin(pinCode)
 
-        // Actualizamos los errores si no pasan la validación
-
-        // -->> Metodo directo
-//        emailError = if (!isEmailValid) "Email inválido" else null
-//        passwordError = if (!isPasswordValid) "La contraseña debe tener al menos 6 caracteres" else null
-//        confirmPasswordError = if (!isConfirmPasswordValid) "La contraseña no coincide" else null
-//        storeNameError = if (!isStoreNameValid) "Campo requerido" else null
-//        storeLocationError = if (!isStoreLocationValid) "Campo requerido" else null
-//        mobileError = if (!isMobileValid) "Debe tener 10 dígitos" else null
-//        pinCodeError = if (!isPinValid) "Debe tener 6 dígitos" else null
-
-//        //-->> Usando ids en la UI
-//        var emailError: Int? by mutableStateOf(null)
-//        emailError = if (!isEmailValid) R.string.error_invalid_email else null
-//
-//        //UI
-//        // Si hay un error, muestra el texto usando `stringResource`
-//        emailError?.let { errorResId ->
-//            Text(text = stringResource(id = errorResId))
-//        }
-
 
         // Asignamos el recurso que corresponda según cada validación
         emailError = if (!isEmailValid) context.getString(R.string.error_invalid_email) else null
@@ -150,7 +130,6 @@ class FormValidationViewModel @Inject constructor(
         mobileError = if (!isMobileValid) context.getString(R.string.error_mobile_digits) else null
         pinCodeError = if (!isPinValid) context.getString(R.string.error_pin_digits) else null
 
-        // Devuelve true si todo es válido
         return isEmailValid && isPasswordValid && isConfirmPasswordValid &&
                 isStoreNameValid && isStoreLocationValid &&
                 isMobileValid && isPinValid

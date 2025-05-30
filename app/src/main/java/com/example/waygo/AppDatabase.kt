@@ -1,4 +1,4 @@
-package com.example.waygo.database
+package com.example.waygo
 
 import android.content.Context
 import androidx.room.Database
@@ -16,10 +16,10 @@ import com.example.waygo.util.DateConverter
 
 @Database(
     entities = [TripEntity::class, ItineraryItemEntity::class, UserEntity::class],
-    version = 5,
+    version = 7,
     exportSchema = false
 )
-@TypeConverters(DateConverter::class)
+@TypeConverters(DateConverter::class, UriConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun tripDao(): TripDao
     abstract fun itineraryItemDao(): ItineraryItemDao
@@ -37,7 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "waygo_database"
                 )
-                    .fallbackToDestructiveMigration() // Allows destructive migration TODO: ??
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance

@@ -1,10 +1,7 @@
-package com.example.waygo.ui.view
+package com.example.waygo.ui.screens
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Settings
@@ -14,7 +11,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.composable
 import androidx.navigation.NavType
@@ -22,15 +18,6 @@ import androidx.navigation.navArgument
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.waygo.R
-import com.example.waygo.ui.screens.BookScreen
-import com.example.waygo.ui.screens.FormValidationScreen
-import com.example.waygo.ui.screens.HomeHotel
-import com.example.waygo.ui.screens.HotelDetailScreen
-import com.example.waygo.ui.screens.HotelsSettingsScreen
-import com.example.waygo.ui.screens.ReservationsScreen
-import com.example.waygo.ui.screens.SubTaskScreen
-import com.example.waygo.ui.screens.VersionScreen
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,7 +59,7 @@ fun HotelsScreen(navController: NavController) {
                                         contentDescription = "Version Icon"
                                     )
                                 },
-                                text = { Text("Version") },
+                                text = { stringResource(id = R.string.version) },
                                 onClick = {
                                     showSettingsMenu = false
                                     navController.navigate("version")
@@ -85,7 +72,7 @@ fun HotelsScreen(navController: NavController) {
                                         contentDescription = "Settings Icon"
                                     )
                                 },
-                                text = { Text("Settings") },
+                                text = { stringResource(id = R.string.settings)},
                                 onClick = {
                                     showSettingsMenu = false
                                     navController.navigate("settings")

@@ -20,9 +20,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.waygo.R
 import com.example.waygo.domain.model.Reservation
 import com.example.waygo.ui.components.ReservationRow
 import com.example.waygo.ui.viewmodel.ReservationsAllViewModel
@@ -35,7 +37,7 @@ fun AllReservationsScreen(groups: Map<String, List<Reservation>>, vm: Reservatio
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .systemBarsPadding()   // respeta notch y barra de navegación
+            .systemBarsPadding()
             .padding(16.dp)
     ) {
         /* ---------- título global ---------- */
@@ -57,8 +59,7 @@ fun AllReservationsScreen(groups: Map<String, List<Reservation>>, vm: Reservatio
                     modifier = Modifier.statusBarsPadding().padding(start = 16.dp, bottom = 12.dp)
                 )
 
-                /*  refresh icon  */
-                IconButton(onClick = { vm.load() }) {       // ← recarga la lista
+                IconButton(onClick = { vm.load() }) {
                     Icon(
                         imageVector = Icons.Default.Refresh,
                         contentDescription = "Reload"
@@ -72,7 +73,7 @@ fun AllReservationsScreen(groups: Map<String, List<Reservation>>, vm: Reservatio
         groups.forEach { (gid, list) ->
             item {
                 Text(
-                    text = "Group $gid",
+                    text = stringResource(id = R.string.group) + " $gid",
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
@@ -82,9 +83,7 @@ fun AllReservationsScreen(groups: Map<String, List<Reservation>>, vm: Reservatio
                 ReservationRow(
                     res = res,
                     onCancel = {
-
-                        Toast.makeText(context, "Esta pantalla es exclusiva del profesor", Toast.LENGTH_SHORT).show() //TODO arreglar
-                        //vm.cancel(res)
+                     vm.cancel(res)
                     }
                 )
             }

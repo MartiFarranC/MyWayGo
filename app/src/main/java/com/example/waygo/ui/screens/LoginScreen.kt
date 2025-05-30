@@ -25,16 +25,15 @@ import androidx.compose.ui.window.Popup
 import com.example.waygo.R
 import com.example.waygo.data.local.dao.UserDao
 import com.google.firebase.auth.FirebaseAuth
-//import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.auth.AuthState
 
 
 @Composable
 fun LoginScreen(navController: NavController, userDao: UserDao) {
-//    var email by remember { mutableStateOf("") }
-//    var password by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
-    var email by remember { mutableStateOf("holavitor@gmail.com") } //Usuari per defecte per a testejar (inventat)
-    var password by remember { mutableStateOf("123456") }
+//    var email by remember { mutableStateOf("holavitor@gmail.com") } //Usuari per defecte per a testejar (inventat)
+//    var password by remember { mutableStateOf("123456") }
 
     var showMessage by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
@@ -102,7 +101,7 @@ fun LoginScreen(navController: NavController, userDao: UserDao) {
             text = stringResource(id = R.string.forgot_password),
             modifier = Modifier
                 .clickable {
-                    navController.navigate("password_recovery") // Navigate to password recovery screen
+                    navController.navigate("password_recovery")
                 }
                 .padding(16.dp),
         )

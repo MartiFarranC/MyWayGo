@@ -17,8 +17,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.waygo.R
 import com.example.waygo.data.AppInfo
 
 
@@ -30,10 +32,10 @@ fun VersionScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Acerca de la aplicación") },
+                title = { stringResource(id = R.string.about_us) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
@@ -48,11 +50,11 @@ fun VersionScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                "Información de la aplicación",
+                stringResource(id = R.string.app_information),
                 style = MaterialTheme.typography.headlineMedium
             )
             Text(
-                text = "Versión: ${AppInfo.versionName} (${AppInfo.versionCode})",
+                text = "${stringResource(id = R.string.version)}: ${AppInfo.versionName} (${AppInfo.versionCode})",
                 style = MaterialTheme.typography.bodyLarge
             )
         }

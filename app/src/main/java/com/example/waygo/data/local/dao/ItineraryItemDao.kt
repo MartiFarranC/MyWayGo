@@ -3,7 +3,6 @@ package com.example.waygo.data.local.dao
 import androidx.room.*
 import com.example.waygo.data.local.entity.ItineraryItemEntity
 
-//TODO: Log.d
 @Dao
 interface ItineraryItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

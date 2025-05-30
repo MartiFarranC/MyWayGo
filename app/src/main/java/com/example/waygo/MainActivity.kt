@@ -10,7 +10,6 @@ import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
 import com.example.waygo.ui.viewmodel.TripViewModel
 import com.example.waygo.data.local.dao.TripDao
-import com.example.waygo.database.AppDatabase
 import com.example.waygo.viewmodel.TripViewModelFactory
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,10 +32,8 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
-
-
-
 
 @Composable
 fun MainScreen(tripViewModel: TripViewModel) {

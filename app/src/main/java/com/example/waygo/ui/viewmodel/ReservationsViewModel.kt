@@ -26,17 +26,14 @@ class ReservationsViewModel @Inject constructor(
     fun load() = viewModelScope.launch {
         _uiState.update { it.copy(loading = true) }
 
-        //IMPORTANTE USANDO EL GROUP ID!!!
-        //AQUI tambien buscar el correo del usuario authenticado!!
-
-        val res = repo.getGroupReservations(BuildConfig.GROUP_ID, "vitorlui@gmail.com")
+        val res = repo.getGroupReservations(BuildConfig.GROUP_ID, "user@gmail.com") //TODO
         _uiState.value = ReservationsUiState(false, res)
     }
 
     fun cancel(r: Reservation) = viewModelScope.launch {
         Log.d("viewmodel", "canceling: ${r.id}")
         repo.cancelById(r.id)
-        _uiState.update { it.copy(reservations = it.reservations - r) } // quita de la lista
+        _uiState.update { it.copy(reservations = it.reservations - r) }
         load()
     }
 }

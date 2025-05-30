@@ -9,12 +9,12 @@ import androidx.room.*
             entity = TripEntity::class,
             parentColumns = ["id"],
             childColumns = ["tripId"],
-            onDelete = ForeignKey.CASCADE       // si borras un viaje, caen sus fotos
+            onDelete = ForeignKey.CASCADE
         )
     ],
     indices = [Index("tripId")]
 )
-data class ImageEntity(
+data class ImageEntity( //TODO: Podem eliminar?
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val tripId: Int,
     val uri: String

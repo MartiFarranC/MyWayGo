@@ -57,7 +57,6 @@ class BookViewModel @Inject constructor(
 
             val decodedError = ErrorUtils.extractErrorMessage(e)
 
-            Log.e("BookViewModel", "HTTP error: ${decodedError}  $e")
             _uiState.update { it.copy(loading = false, hotels = emptyList(), message = decodedError) }
 
             _uiState.update {

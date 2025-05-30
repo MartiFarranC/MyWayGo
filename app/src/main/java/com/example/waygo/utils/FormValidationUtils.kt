@@ -4,7 +4,6 @@ object FormValidationUtils {
 
     fun validateUserEmail(email: String): Boolean {
         return email.isNotEmpty()
-                //&& isEmailValid(email)
     }
 
     fun validatePassword(password: String): Boolean {
@@ -32,11 +31,6 @@ object FormValidationUtils {
 
     fun validatePin(pinCode: String): Boolean {
         return pinCode.isNotEmpty() && pinCode.length == 6
-    }
-
-    private fun isEmailValid(email: String): Boolean {
-        val emailRegex = Regex("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
-        return emailRegex.matches(email)
     }
 
 }

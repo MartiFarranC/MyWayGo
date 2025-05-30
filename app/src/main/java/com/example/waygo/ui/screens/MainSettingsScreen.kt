@@ -68,7 +68,6 @@ fun SettingsScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(onClick = {
-            // Handle save settings action
         }) {
             Text(text = stringResource(id = R.string.save_settings))
         }

@@ -111,6 +111,30 @@
     <string name="error_required_field">Camp requerit</string>
     <string name="error_mobile_digits">Ha de contenir 10 dígits</string>
     <string name="error_pin_digits">Ha de contenir 6 dígits</string>
-    <string name="hotels">Hotels</string>
+    <string name="hotels">Hotels</string><string name="no_images_yet">Encara no hi ha imatges</string>
+    <string name="group">Grup</string>
+    <string name="stay_duration">Durada de l estada: </string>
+    <string name="price_per_night">€/ Nit</string>
+    <string name="total">Total: </string>
+    <string name="reserve">Reserva</string>
+    <string name="form">Formulari</string>
+    <string name="confirm_password">Confirma la contrasenya</string>
+    <string name="store_name">Nom de la botiga</string>
+    <string name="from">Des de</string>
+    <string name="app_configuration">Configuració de l aplicació</string>
+    <string name="dark_theme">Tema fosc</string>
+    <string name="more_configuration">Més configuració</string>
+    <string name="language">Idioma</string>
+    <string name="edit_subtask">Edita la subtasca</string>
+    <string name="new_subtask">Nova subtasca</string>
+    <string name="title">Títol</string>
+    <string name="description">Descripció</string>
+    <string name="save">Desa</string>
+    <string name="app_information">Informació de l aplicació</string>
+    <string name="login_failed">Error d inici de sessió</string>
+    <string name="verify_email">Verifica el teu correu abans</string>
+    <string name="verification_failed">Error de verificació</string>
+    <string name="loading">Carregant…</string>
+
 
 </resources>

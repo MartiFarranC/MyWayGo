@@ -28,9 +28,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.waygo.R
 import com.example.waygo.ui.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,17 +41,16 @@ fun HotelsSettingsScreen(
     navController: NavController,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    // Accedemos a las propiedades directamente
     val language = viewModel.language
     val isDarkTheme = viewModel.isDarkTheme
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Ajustes") },
+                title = { stringResource(id = R.string.settings) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
@@ -63,7 +64,7 @@ fun HotelsSettingsScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                "Configuración de la aplicación",
+                stringResource(id = R.string.app_configuration),
                 style = MaterialTheme.typography.headlineMedium
             )
 
@@ -77,7 +78,7 @@ fun HotelsSettingsScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Tema oscuro")
+                Text(stringResource(id = R.string.dark_theme))
                 Switch(
                     checked = isDarkTheme,
                     onCheckedChange = { viewModel.updateDarkTheme(it) }
@@ -85,7 +86,7 @@ fun HotelsSettingsScreen(
             }
 
             Divider(thickness = 1.dp)
-            Text("Más configuraciones avanzadas...")
+            Text(stringResource(id = R.string.more_configuration))
         }
     }
 }
@@ -98,7 +99,7 @@ fun LanguageDropdown(
 ) {
     var expanded by remember { mutableStateOf(false) }
     val languageDisplay = when (selectedLanguage) {
-        "es" -> "Español"
+        "es" -> "Spanish"
         "en" -> "English"
         "ca" -> "Catalan"
         else -> selectedLanguage
@@ -107,11 +108,11 @@ fun LanguageDropdown(
     OutlinedTextField(
         value = languageDisplay,
         onValueChange = {},
-        label = { Text("Idioma") },
+        label = { Text(stringResource(id = R.string.language)) },
         readOnly = true,
         trailingIcon = {
             IconButton(onClick = { expanded = true }) {
-                Icon(Icons.Default.ArrowDropDown, contentDescription = "Mostrar idiomas")
+                Icon(Icons.Default.ArrowDropDown, contentDescription = "Show languages")
             }
         },
         modifier = Modifier.fillMaxWidth()
@@ -124,7 +125,7 @@ fun LanguageDropdown(
     ) {
         availableLanguages.forEach { lang ->
             val langName = when (lang) {
-                "es" -> "Español"
+                "es" -> "Spanish"
                 "en" -> "English"
                 "ca" -> "Catalan"
                 else -> lang

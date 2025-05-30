@@ -112,5 +112,30 @@
     <string name="error_mobile_digits">Debe tener 10 dígitos</string>
     <string name="error_pin_digits">Debe tener 6 dígitos</string>
     <string name="hotels">Hoteles</string>
+    <string name="no_images_yet">Aún no hay imágenes</string>
+    <string name="group">Grupo</string>
+    <string name="stay_duration">Duración de la estancia: </string>
+    <string name="price_per_night">€/ Noche</string>
+    <string name="total">Total: </string>
+    <string name="reserve">Reservar</string>
+    <string name="form">Formulario</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="store_name">Nombre de la tienda</string>
+    <string name="from">Desde</string>
+    <string name="app_configuration">Configuración de la aplicación</string>
+    <string name="dark_theme">Tema oscuro</string>
+    <string name="more_configuration">Más configuración</string>
+    <string name="language">Idioma</string>
+    <string name="edit_subtask">Editar subtarea</string>
+    <string name="new_subtask">Nueva subtarea</string>
+    <string name="title">Título</string>
+    <string name="description">Descripción</string>
+    <string name="save">Guardar</string>
+    <string name="app_information">Información de la aplicación</string>
+    <string name="login_failed">Inicio de sesión fallido</string>
+    <string name="verify_email">Verifica tu correo antes</string>
+    <string name="verification_failed">Verificación fallida</string>
+    <string name="loading">Cargando…</string>
+
 
 </resources>

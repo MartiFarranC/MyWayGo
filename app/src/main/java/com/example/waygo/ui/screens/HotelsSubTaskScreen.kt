@@ -31,9 +31,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.waygo.R
 import com.example.waygo.ui.viewmodel.SubTaskViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,7 +46,6 @@ fun SubTaskScreen(
 ) {
     val subTasks = viewModel.subTasks
 
-    // Estados para el diálogo de edición/creación
     var showDialog by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
     var currentSubTaskId by remember { mutableStateOf(0) }
@@ -54,12 +55,12 @@ fun SubTaskScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Editar Subtareas") },
+                title = { Text(stringResource(id = R.string.edit_subtask))},
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Volver"
+                            contentDescription = "Back"
                         )
                     }
                 }
@@ -68,14 +69,13 @@ fun SubTaskScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    // Configurar para añadir una nueva subtarea
                     isEditing = false
                     subTaskTitle = ""
                     subTaskDescription = ""
                     showDialog = true
                 }
             ) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = "Añadir Subtarea")
+                Icon(imageVector = Icons.Filled.Add, contentDescription = "Add SubTask")
             }
         }
     ) { innerPadding ->
@@ -107,19 +107,19 @@ fun SubTaskScreen(
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
-            title = { Text(if (isEditing) "Editar Subtarea" else "Nueva Subtarea") },
+            title = { Text(if (isEditing) stringResource(id = R.string.edit_subtask) else stringResource(id = R.string.new_subtask)) },
             text = {
                 Column {
                     OutlinedTextField(
                         value = subTaskTitle,
                         onValueChange = { subTaskTitle = it },
-                        label = { Text("Título") },
+                        label = { Text(stringResource(id = R.string.title)) },
                         modifier = Modifier.fillMaxWidth()
                     )
                     OutlinedTextField(
                         value = subTaskDescription,
                         onValueChange = { subTaskDescription = it },
-                        label = { Text("Descripción") },
+                        label = { Text(stringResource(id = R.string.description)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp)
@@ -150,12 +150,12 @@ fun SubTaskScreen(
                         showDialog = false
                     }
                 ) {
-                    Text("Guardar")
+                    Text(stringResource(id = R.string.save))
                 }
             },
             dismissButton = {
                 Button(onClick = { showDialog = false }) {
-                    Text("Cancelar")
+                    Text(stringResource(id = R.string.cancel))
                 }
             }
         )
@@ -181,13 +181,13 @@ fun SubTaskItem(
         IconButton(onClick = onEdit) {
             Icon(
                 imageVector = Icons.Filled.Edit,
-                contentDescription = "Editar Subtarea"
+                contentDescription = "Edit Subtask"
             )
         }
         IconButton(onClick = onDelete) {
             Icon(
                 imageVector = Icons.Filled.Delete,
-                contentDescription = "Borrar Subtarea"
+                contentDescription = "Delete Subtask"
             )
         }
     }

@@ -20,7 +20,6 @@ fun PasswordRecoveryScreen(navController: NavController) {
     var errorMessage by remember { mutableStateOf("") }
     var successMessage by remember { mutableStateOf("") }
 
-    // Function to send password recovery email
     fun sendPasswordRecoveryEmail() {
         if (email.isNotEmpty()) {
             loading = true
@@ -65,13 +64,11 @@ fun PasswordRecoveryScreen(navController: NavController) {
             Text(text = stringResource(id = R.string.recover_password))
         }
 
-        // Show loading indicator
         if (loading) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = stringResource(id = R.string.sending_recovery_email), modifier = Modifier.padding(8.dp))
         }
 
-        // Display success or error message
         if (errorMessage.isNotEmpty()) {
             Text(text = errorMessage, color = androidx.compose.ui.graphics.Color.Red)
         }

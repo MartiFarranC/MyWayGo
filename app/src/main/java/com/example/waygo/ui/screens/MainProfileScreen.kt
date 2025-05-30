@@ -45,7 +45,6 @@ fun ProfileScreen(navController: NavController, user: UserEntity, viewModel: Reg
     }
 
     if (user.id == null || user.email.isBlank()) {
-        // Guest detected, redirect to login
         LaunchedEffect(Unit) {
             navController.navigate("login") {
                 popUpTo("profile") { inclusive = true }
@@ -137,7 +136,7 @@ fun ProfileScreen(navController: NavController, user: UserEntity, viewModel: Reg
                 checked = viewModel.receiveEmail.value,
                 onCheckedChange = { viewModel.receiveEmail.value = it }
             )
-            Text(text = stringResource(id = R.string.receive_email) + " ${if (viewModel.receiveEmail.value) "Yes" else "No"}" )//TODO Traduct
+            Text(text = stringResource(id = R.string.receive_email) + " ${if (viewModel.receiveEmail.value) "Yes" else "No"}" )
         }
 
         Button(

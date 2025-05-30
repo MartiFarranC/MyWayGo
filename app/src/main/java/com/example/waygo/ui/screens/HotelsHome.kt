@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,6 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.waygo.BuildConfig
+import com.example.waygo.R
 import com.example.waygo.domain.model.Hotel
 import com.example.waygo.ui.viewmodel.BookViewModel
 import com.example.waygo.ui.viewmodel.ReservationsAllViewModel
@@ -49,8 +51,6 @@ fun HomeHotel(rootNav: NavController) {
 
     /* tabs de la bottom-bar */
     val tabs = listOf(Screen.MyRes, Screen.AllRes, Screen.Book)
-
-
 
     /*  NavController exclusivo de los tabs  */
     val tabNav = rememberNavController()
@@ -136,7 +136,6 @@ fun BookScreen(
                     .fillMaxWidth()
             )
 
-            /* ⬇⬇  ¡todos los TODO() eliminados! ⬇⬇ */
             ExposedDropdownMenu(
                 expanded = ui.cityMenu,
                 onDismissRequest = { vm.toggleCityMenu() }
@@ -202,7 +201,7 @@ fun DateField(
         value = date?.format(formatter) ?: "",
         onValueChange = {},
         readOnly = true,
-        enabled = false,                     // ← evita que consuma el click
+        enabled = false,
         label = { Text(label) },
         modifier = Modifier
             .fillMaxWidth()
@@ -211,7 +210,7 @@ fun DateField(
                 DatePickerDialog(
                     context,
                     { _, y, m, d ->
-                        onPick(LocalDate.of(y, m + 1, d))   // meses 0-based
+                        onPick(LocalDate.of(y, m + 1, d))
                     },
                     now.year, now.monthValue - 1, now.dayOfMonth
                 ).show()
@@ -225,7 +224,10 @@ fun HotelList(hotels: List<Hotel>, onClick: (Hotel) -> Unit) {
 
     LazyColumn {
         items(hotels) { h ->
-            Card(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).clickable { onClick(h) }) {
+            Card(modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+                .clickable { onClick(h) }) {
                 Log.d("home", h.id)
                 val id = h.id
                 Row(Modifier.height(120.dp)) {
@@ -233,13 +235,15 @@ fun HotelList(hotels: List<Hotel>, onClick: (Hotel) -> Unit) {
                         painter = rememberAsyncImagePainter(base + ( h.imageUrl ?: "")),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.width(120.dp).fillMaxHeight()
+                        modifier = Modifier
+                            .width(120.dp)
+                            .fillMaxHeight()
                     )
                     Column(Modifier.padding(8.dp)) {
                         Text(h.name + " ($id)", fontWeight = FontWeight.Bold)
                         Text(h.address)
                         Spacer(Modifier.weight(1f))
-                        Text("From ${h.rooms?.minOfOrNull { it.price } ?: "-"}€", fontWeight = FontWeight.SemiBold)
+                        Text("${stringResource(id = R.string.from)} ${h.rooms?.minOfOrNull { it.price } ?: "-"}€", fontWeight = FontWeight.SemiBold)
                     }
                 }
             }

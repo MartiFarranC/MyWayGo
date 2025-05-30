@@ -8,7 +8,6 @@ class RegisterViewModel : ViewModel() {
     var username = mutableStateOf("")
     var receiveEmail = mutableStateOf(false)
     var password = mutableStateOf("")
-    var confirmPassword = mutableStateOf("")
     var birthdate = mutableStateOf("")
     var address = mutableStateOf("")
     var country = mutableStateOf("")

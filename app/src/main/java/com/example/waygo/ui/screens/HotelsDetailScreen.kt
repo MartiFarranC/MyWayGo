@@ -33,12 +33,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.waygo.BuildConfig
+import com.example.waygo.R
 import com.example.waygo.ui.components.RoomImageCarouselWithControls
 import com.example.waygo.ui.viewmodel.HotelDetailViewModel
 import java.time.LocalDate
@@ -77,7 +79,7 @@ fun HotelDetailScreen(
         topBar = {
 
             TopAppBar(
-                title = { Text((ui.value.hotel?.name + " ($hotelId)") ?: "Hotel")  },
+                title = { Text((ui.value.hotel?.name + " ($hotelId)"))  },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, null)
@@ -94,7 +96,7 @@ fun HotelDetailScreen(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "Stay: $start → $end ($nights nights)",
+                        text = stringResource(id = R.string.stay_duration, nights),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -117,7 +119,7 @@ fun HotelDetailScreen(
                 Card(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
                     Column(Modifier.padding(16.dp)) {
                         Text(room.roomType + " (${room.id})", fontWeight = FontWeight.Bold)
-                        Text("${room.price} € / night")
+                        Text(text = "${room.price} ${stringResource(id = R.string.price_per_night)}")
 
 
                         Spacer(Modifier.height(8.dp))
@@ -146,7 +148,7 @@ fun HotelDetailScreen(
                         ) {
                             Column {
                                 Text(
-                                    "Total: €$total",
+                                    text = stringResource(id = R.string.total, total),
                                     fontWeight = FontWeight.ExtraBold,
                                     style = MaterialTheme.typography.labelLarge
                                 )
@@ -160,7 +162,8 @@ fun HotelDetailScreen(
                                 vm.selectRoom(room)
                                 showConfirmation = true
                             }) {
-                                Text("Reserve")
+                                Text(stringResource(id = R.string.reserve))
+
                             }
                         }
                     }

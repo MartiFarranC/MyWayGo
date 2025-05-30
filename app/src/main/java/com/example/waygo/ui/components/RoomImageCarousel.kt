@@ -22,7 +22,6 @@ fun RoomImageCarousel(
     modifier: Modifier = Modifier
 ) {
     if (images.isEmpty()) return                       // nada que mostrar
-
       val pagerState = rememberPagerState(
         initialPage = 0,
         pageCount = { images.size }

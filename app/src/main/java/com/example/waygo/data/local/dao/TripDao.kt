@@ -10,10 +10,10 @@ interface TripDao {
     suspend fun addTrip(trip: TripEntity)
 
     @Query("SELECT * FROM TripEntity WHERE id = :id")
-    suspend fun getTripById(id: Int): TripEntity? //TODO: Log.d("TripDao", "Fetching trip with ID: $id")
+    suspend fun getTripById(id: Int): TripEntity?
 
     @Query("SELECT * FROM TripEntity ORDER BY startDate ASC")
-    suspend fun getAllTrips(): List<TripEntity> //TODO: Log.d("TripDao", "Fetching all trips")
+    suspend fun getAllTrips(): List<TripEntity>
 
     @Update
     suspend fun updateTrip(trip: TripEntity)
@@ -23,12 +23,4 @@ interface TripDao {
 
     @Query("SELECT * FROM TripEntity WHERE userId = :userId ORDER BY startDate ASC")
     suspend fun getTripsByUserId(userId: String): List<TripEntity>
-
-//    @Insert
-//    suspend fun insertImage(image: ImageEntity)
-
-    /* GalleryDao */
-//    @Query("DELETE FROM image WHERE uri = :uri")
-//    suspend fun deleteImageByUri(uri: String)
-
 }

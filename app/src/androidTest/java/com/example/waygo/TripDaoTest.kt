@@ -3,7 +3,6 @@ package com.example.waygo
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.example.waygo.data.local.dao.TripDao
-import com.example.waygo.database.AppDatabase
 import org.junit.After
 import org.junit.Before
 import org.junit.runner.RunWith

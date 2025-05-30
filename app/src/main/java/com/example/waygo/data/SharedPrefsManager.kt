@@ -16,8 +16,6 @@ class SharedPrefsManager @Inject constructor(
         LanguageChangeUtil()
     }
 
-
-
     var userLanguage: String?
         get() = preferences.getString("user_language", "en")
         set(value) {
