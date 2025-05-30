@@ -136,6 +136,7 @@
     <string name="verify_email">Verifica tu correo antes</string>
     <string name="verification_failed">Verificación fallida</string>
     <string name="loading">Cargando…</string>
-
+    <string name="take_photo">Hacer foto</string>
+    <string name="choose_from_gallery">Escoger de la galeria</string>
 
 </resources>

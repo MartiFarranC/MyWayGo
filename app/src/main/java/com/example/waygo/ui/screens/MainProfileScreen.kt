@@ -30,19 +30,19 @@ fun ProfileScreen(navController: NavController, user: UserEntity, viewModel: Reg
     val context = LocalContext.current
 
     var selectedDate by remember { mutableStateOf<Date?>(null) }
-    val datePickerDialog = remember {
-        android.app.DatePickerDialog(
-            context,
-            { _, year, month, dayOfMonth ->
-                val calendar = java.util.Calendar.getInstance()
-                calendar.set(year, month, dayOfMonth)
-                selectedDate = calendar.time
-            },
-            java.util.Calendar.getInstance().get(java.util.Calendar.YEAR),
-            java.util.Calendar.getInstance().get(java.util.Calendar.MONTH),
-            java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH)
-        )
-    }
+//    val datePickerDialog = remember {
+//        android.app.DatePickerDialog(
+//            context,
+//            { _, year, month, dayOfMonth ->
+//                val calendar = java.util.Calendar.getInstance()
+//                calendar.set(year, month, dayOfMonth)
+//                selectedDate = calendar.time
+//            },
+//            java.util.Calendar.getInstance().get(java.util.Calendar.YEAR),
+//            java.util.Calendar.getInstance().get(java.util.Calendar.MONTH),
+//            java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH)
+//        )
+//    }
 
     if (user.id == null || user.email.isBlank()) {
         LaunchedEffect(Unit) {
@@ -87,44 +87,66 @@ fun ProfileScreen(navController: NavController, user: UserEntity, viewModel: Reg
 
         OutlinedTextField(
             value = username,
-            onValueChange = { username = it },
+//            onValueChange = { username = it },
+            onValueChange = { },
+            enabled = false,
             label = { Text(text = stringResource(id = R.string.user)) },
             modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
             value = email,
-            onValueChange = { email = it },
+//            onValueChange = { email = it },
+            onValueChange = { },
+            enabled = false,
             label = { Text(text = stringResource(id = R.string.mail)) },
             modifier = Modifier.fillMaxWidth()
         )
-        Button(
-            onClick = { datePickerDialog.show() },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Text(
-                text = selectedDate?.let { java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(it) }
-                    ?: stringResource(id = R.string.birthdate)
-            )
-            birthdate = (selectedDate ?: java.util.Date())
-        }
+
+        OutlinedTextField(
+            value = selectedDate?.let {
+                java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(it)
+            } ?: "",
+            onValueChange = { },
+            enabled = false,
+            label = { Text(text = stringResource(id = R.string.mail)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+//        Button(
+//            onClick = { datePickerDialog.show() },
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(16.dp)
+//        ) {
+//            Text(
+//                text = selectedDate?.let { java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(it) }
+//                    ?: stringResource(id = R.string.birthdate)
+//            )
+//            birthdate = (selectedDate ?: java.util.Date())
+//        }
+
         OutlinedTextField(
             value = address,
-            onValueChange = { address = it },
+//            onValueChange = { address = it },
+            onValueChange = { },
+            enabled = false,
             label = { Text(text = stringResource(id = R.string.address)) },
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
             value = country,
-            onValueChange = { country = it },
+//            onValueChange = { country = it },
+            onValueChange = { },
+            enabled = false,
             label = { Text(text = stringResource(id = R.string.country)) },
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
             value = phone,
-            onValueChange = { phone = it },
+//            onValueChange = { phone = it },
+            onValueChange = { },
+            enabled = false,
             label = { Text(text = stringResource(id = R.string.phone)) },
             modifier = Modifier.fillMaxWidth()
         )
@@ -132,11 +154,11 @@ fun ProfileScreen(navController: NavController, user: UserEntity, viewModel: Reg
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(vertical = 8.dp)
         ) {
-            Checkbox(
-                checked = viewModel.receiveEmail.value,
-                onCheckedChange = { viewModel.receiveEmail.value = it }
-            )
-            Text(text = stringResource(id = R.string.receive_email) + " ${if (viewModel.receiveEmail.value) "Yes" else "No"}" )
+//            Checkbox(
+//                checked = viewModel.receiveEmail.value,
+//                onCheckedChange = { viewModel.receiveEmail.value = it }
+//            )
+            Text(text = stringResource(id = R.string.receive_email) + ": ${if (viewModel.receiveEmail.value) "Yes" else "No"}" )
         }
 
         Button(

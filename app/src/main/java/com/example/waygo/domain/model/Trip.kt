@@ -7,8 +7,8 @@ data class Trip(
     val name: String,
     val destinations: String,
     val participants: String,
-    val startDate: String, //TODO date
-    val endDate: String, //TODO
+    val startDate: String,
+    val endDate: String,
     val userId: String,
     val images: List<Uri>
 ) {

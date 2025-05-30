@@ -3,6 +3,7 @@ package com.example.waygo.data.local.entity
 import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Date
 
 @Entity
 data class TripEntity(
@@ -10,8 +11,8 @@ data class TripEntity(
     val name: String,
     val destinations: String,
     val participants: String,
-    val startDate: String, //TODO: Ha de ser Data
-    val endDate: String,//TODO: Ha de ser Data
+    val startDate: String,
+    val endDate: String,
     val userId: String,
     val images: List<Uri>
 )

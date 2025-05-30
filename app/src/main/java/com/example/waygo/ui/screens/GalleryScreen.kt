@@ -162,21 +162,23 @@ fun GalleryScreen(
     if (showSheet) {
         ModalBottomSheet(onDismissRequest = { showSheet = false }) {
             ListItem(
-                headlineContent = { Text("Take photo") },
+                headlineContent = { Text(text = stringResource(id = R.string.take_photo)) },
                 modifier = Modifier.clickable {
                     takePicture.launch(null)
                     showSheet = false
                 }
             )
             ListItem(
-                headlineContent = { Text("Choose from gallery") },
+                headlineContent = { Text(text = stringResource(id = R.string.choose_from_gallery)) },
                 modifier = Modifier.clickable {
                     pickImage.launch("image/*")
                     showSheet = false
                 }
             )
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
+
 
     zoomUri?.let { uri ->
         AlertDialog(
