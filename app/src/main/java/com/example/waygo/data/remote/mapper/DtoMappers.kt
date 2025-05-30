@@ -14,7 +14,8 @@ fun HotelDto.toDomain(): Hotel = Hotel(
     name      = name,
     address   = address,
     rating    = rating,
-    imageUrl  = imageUrl,
+//    imageUrl  = imageUrl,
+    imageUrl  = imageUrl ?: "",
     rooms     = rooms
         ?.map { it.toDomain() }
         ?: emptyList()
@@ -22,21 +23,35 @@ fun HotelDto.toDomain(): Hotel = Hotel(
 
 fun RoomDto.toDomain(): Room = Room(
     id       = id,
-    roomType = roomType,
+//    roomType = roomType,
+    roomType = roomType ?: "Standard",
     price    = price,
     images   = images
 )
 
+//fun ReservationDto.toDomain(): Reservation = Reservation(
+//    id         = id,
+////    hotelId    = hotelId,
+//    hotelId = hotelId ?: "",
+//    roomId     = roomId,
+//    startDate  = startDate,
+//    endDate    = endDate,
+//    guestName  = guestName,
+//    guestEmail = guestEmail,
+//    hotel = hotel.toDomain(),
+//    room  = room.toDomain()
+//)
+
 fun ReservationDto.toDomain(): Reservation = Reservation(
-    id         = id,
-    hotelId    = hotelId,
-    roomId     = roomId,
-    startDate  = startDate,
-    endDate    = endDate,
-    guestName  = guestName,
-    guestEmail = guestEmail,
-    hotel = hotel.toDomain(),
-    room  = room.toDomain()
+    id         = id ?: "",
+    hotelId    = hotelId ?: "",
+    roomId     = roomId ?: "",
+    startDate  = startDate ?: "",
+    endDate    = endDate ?: "",
+    guestName  = guestName ?: "",
+    guestEmail = guestEmail ?: "",
+    hotel      = hotel?.toDomain() ?: Hotel("", "", "", 0, ""),
+    room       = room?.toDomain() ?: Room("", "", 0f, emptyList()) //
 )
 
 fun ReserveRequest.toDto(): ReserveRequestDto = ReserveRequestDto(

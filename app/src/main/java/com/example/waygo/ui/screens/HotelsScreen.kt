@@ -3,8 +3,6 @@ package com.example.waygo.ui.screens
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
@@ -42,43 +40,15 @@ fun HotelsScreen(navController: NavController) {
                         }
                     }
                     Box {
-                        IconButton(onClick = { showSettingsMenu = !showSettingsMenu }) {
+                        IconButton(onClick = {
+                            navController.navigate("settings")
+                        }) {
                             Icon(
                                 imageVector = Icons.Outlined.Settings,
                                 contentDescription = "Settings"
                             )
                         }
-                        DropdownMenu(
-                            expanded = showSettingsMenu,
-                            onDismissRequest = { showSettingsMenu = false }
-                        ) {
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Filled.Build,
-                                        contentDescription = "Version Icon"
-                                    )
-                                },
-                                text = { stringResource(id = R.string.version) },
-                                onClick = {
-                                    showSettingsMenu = false
-                                    navController.navigate("version")
-                                }
-                            )
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Filled.Settings,
-                                        contentDescription = "Settings Icon"
-                                    )
-                                },
-                                text = { stringResource(id = R.string.settings)},
-                                onClick = {
-                                    showSettingsMenu = false
-                                    navController.navigate("settings")
-                                }
-                            )
-                        }
+
                     }
                 }
             )

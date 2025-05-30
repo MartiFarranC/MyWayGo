@@ -1,7 +1,9 @@
 package com.example.waygo.ui.screens
 
 import android.app.DatePickerDialog
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -46,6 +48,7 @@ sealed class Screen(val route: String, val icon: ImageVector, val label: String)
 
 val base = BuildConfig.HOTELS_API_URL.trimEnd('/')
 
+@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun HomeHotel(rootNav: NavController) {
 
@@ -110,6 +113,7 @@ fun HomeHotel(rootNav: NavController) {
 
 
 // ----------------------------- Book Screen ----------------------------------
+@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookScreen(
