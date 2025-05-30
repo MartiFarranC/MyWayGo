@@ -26,7 +26,7 @@ class ReservationsViewModel @Inject constructor(
     fun load() = viewModelScope.launch {
         _uiState.update { it.copy(loading = true) }
 
-        val res = repo.getGroupReservations(BuildConfig.GROUP_ID, "user@gmail.com") //TODO
+        val res = repo.getGroupReservations(BuildConfig.GROUP_ID, "user@gmail.com")
         _uiState.value = ReservationsUiState(false, res)
     }
 

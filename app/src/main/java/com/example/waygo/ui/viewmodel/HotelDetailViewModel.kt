@@ -1,9 +1,6 @@
 package com.example.waygo.ui.viewmodel
 
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.waygo.domain.model.Hotel
@@ -25,8 +22,6 @@ class HotelDetailViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(HotelDetailUiState())
     val uiState: StateFlow<HotelDetailUiState> = _uiState
-
-    var showImageDialog by mutableStateOf(false)
 
     fun selectRoom(room: Room) {
         _uiState.value = _uiState.value.copy(selectedRoom = room)
@@ -56,7 +51,7 @@ class HotelDetailViewModel @Inject constructor(
             roomId  = room.id,
             startDate = start,
             endDate   = end,
-            guestName = "User", //TODO
+            guestName = "User",
             guestEmail = "user@gmail.com"
         )
 

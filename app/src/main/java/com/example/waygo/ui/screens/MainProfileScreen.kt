@@ -172,4 +172,4 @@ fun ProfileScreen(navController: NavController, user: UserEntity, viewModel: Reg
             Text(text = stringResource(id = R.string.back_to_home))
         }
     }
-} //TODO: Add a button to save the changes
+}

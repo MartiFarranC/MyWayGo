@@ -464,7 +464,7 @@ fun TravelEditDialog(
     var showParticipantsDialog by remember { mutableStateOf(false) }
     var newDestination by remember { mutableStateOf("") }
     var newParticipants by remember { mutableStateOf("") }
-    var userId by remember { mutableStateOf("") }
+    var userId by remember { mutableStateOf(trip.userId) }
     var images by remember { mutableStateOf(trip.images) }
 
     val calendar = Calendar.getInstance()
